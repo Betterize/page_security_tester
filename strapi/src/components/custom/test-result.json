@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_custom_test_results",
+  "info": {
+    "displayName": "TestResult",
+    "icon": "shield"
+  },
+  "options": {},
+  "attributes": {
+    "tool": {
+      "type": "enumeration",
+      "enum": [
+        "wapiti",
+        "nmap"
+      ],
+      "required": true
+    },
+    "scan_time": {
+      "type": "string"
+    },
+    "command": {
+      "type": "string"
+    },
+    "result": {
+      "type": "json"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "waiting",
+        "running",
+        "finished",
+        "failed"
+      ]
+    }
+  }
+}

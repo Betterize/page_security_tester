@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "page_security_tests",
+  "info": {
+    "singularName": "page-security-test",
+    "pluralName": "page-security-tests",
+    "displayName": "PageSecurityTest"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "is_public": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "website": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "is_finished": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "tests_results": {
+      "type": "component",
+      "repeatable": true,
+      "component": "custom.test-result"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "wapiti_clasifications",
+  "info": {
+    "singularName": "wapiti-clasification",
+    "pluralName": "wapiti-clasifications",
+    "displayName": "WapitiClasification"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "json",
+      "required": true
+    }
+  }
+}

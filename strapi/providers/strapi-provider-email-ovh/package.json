@@ -1,0 +1,21 @@
+{
+    "name": "strapi-provider-email-ovh",
+    "version": "1.0.0",
+    "main": "./lib",
+    "author": {
+      "name": "Adamozo"
+    },
+    "directories": {
+      "lib": "./lib"
+    },
+    "scripts": {
+      "test": "echo no test specified"
+    },
+    "strapi": {
+      "isProvider": true
+    },
+    "dependencies": {
+        "nodemailer": "^6.9.3",
+        "@strapi/utils": "^4.9.2"
+      }
+  }
