@@ -4,7 +4,8 @@
   "info": {
     "singularName": "page-security-test",
     "pluralName": "page-security-tests",
-    "displayName": "PageSecurityTest"
+    "displayName": "PageSecurityTest",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -24,15 +25,24 @@
       "type": "email",
       "required": true
     },
-    "is_finished": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
     "tests_results": {
       "type": "component",
       "repeatable": true,
       "component": "custom.test-result"
+    },
+    "error_msg": {
+      "type": "text"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "waiting",
+        "running",
+        "finished",
+        "failed"
+      ],
+      "default": "waiting",
+      "required": true
     }
   }
 }

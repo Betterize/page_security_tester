@@ -146,3 +146,6 @@ docker compose -f docker-compose.production.yaml up -d
 ```
 
 ---
+
+https://forum.strapi.io/t/draft-and-posted-entities/3576
+https://stackoverflow.com/questions/66733660/bring-entities-on-draft-mode-strapi
