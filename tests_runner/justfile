@@ -1,0 +1,7 @@
+#run formater on given location
+format WHAT:
+    poetry run yapf -i {{WHAT}}
+
+#run formater on whole project
+format-all:
+    poetry run yapf -i --recursive tests_runner/*

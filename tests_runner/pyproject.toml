@@ -7,9 +7,24 @@ readme = "README.md"
 packages = [{include = "tests_runner"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
+yapf = "^0.40.1"
+xmltodict = "^0.13.0"
+dataclasses-json = "0.5.7"
+redis = "^4.6.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "tests_runner.start:start"
+
+[tool.yapf]
+based_on_style = "pep8"
+spaces_before_comment = 4
+split_before_logical_operator = true
+column_limit = 110
+blank_line_before_nested_class_or_def = true
+blank_lines_around_top_level_definition = 2
