@@ -49,6 +49,7 @@ export enum HookState {
   afterFindOne = "afterFindOne",
   beforeFindMany = "beforeFindMany",
   afterFindMany = "afterFindMany",
+  none = "none",
 }
 
 export function log(
