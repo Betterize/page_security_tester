@@ -8,8 +8,21 @@ import redis
 
 def run_tests(url: str):
     result_dir = test_results_dir(url)
-    #wapiti_result = run_wapiti(url=url, result_dir=result_dir, scope="domain")
+
+    print("--------------------------")
+    print("--- Starts wapiti scan ---")
+
+    wapiti_result = run_wapiti(url=url, result_dir=result_dir, scope="domain")
+
+    print("wapiti results: ")
+    print(wapiti_result)
+
+    print("--------------------------")
+    print("--- Starts nmap scan ---")
+
     nmap_result = run_namp(url=url, result_dir=result_dir)
+
+    print("nmap results: ")
     print(nmap_result.to_json())
 
 
@@ -30,13 +43,11 @@ def run_service():
             print("Exit triggered by quit message")
             return
         
-        run_tests(url="https://betterize.pl")
+        run_tests(url=decoded_message)
 
 
 if __name__ == "__main__":
     print("--- Test started ---")
     start_time = time.time()
-    #run_tests()
-
     run_service()
     print("--- %s seconds ---" % (time.time() - start_time))

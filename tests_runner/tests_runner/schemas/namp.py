@@ -23,5 +23,5 @@ class Port:
 @dataclass_json
 @dataclass
 class NmapResult:
-    host_names: list[HostName]
-    ports: list[Port]
+    host_names: list[HostName] | None
+    ports: list[Port] | None

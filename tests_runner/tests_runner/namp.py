@@ -8,6 +8,7 @@ def run_namp(url: str, result_dir: str):
     create_file_with_path(f'{result_dir}', 'nmap.xml')
     start_nmap_test(url=url, filename=f'{result_dir}/nmap.xml')
     final_result = process_result(f'{result_dir}/nmap.xml')
+
     return final_result
 
 
@@ -32,31 +33,38 @@ def process_result(filename: str) -> NmapResult:
 
 
 def select_needed(xml_dict) -> NmapResult:
-    ports = xml_dict["nmaprun"]["host"]["ports"]
+    if "host" not in xml_dict["nmaprun"]:
+        # execute if website does not exists
+        return NmapResult(host_names=None, ports=None)
+    
+    host = xml_dict["nmaprun"]["host"]
 
     host_names: list[HostName] = [
         HostName(name=host["@name"], type=host["@type"])
-        for host in (xml_dict["nmaprun"]["host"]["hostnames"]["hostname"])
+        for host in (host["hostnames"]["hostname"])
     ]
 
-    visible_ports: list[Port] = []
+    if  "ports" in xml_dict["nmaprun"]["host"]:
+        visible_ports: list[Port] = []
 
-    for port_data in ports["port"]:
-        protocol = port_data["@protocol"]
-        id = port_data["@portid"]
-        state = port_data["state"]["@state"]
-        service = port_data["service"]
-        reason = port_data["state"]["@reason"]
+        for port_data in xml_dict["nmaprun"]["host"]["ports"]["port"]:
+            protocol = port_data["@protocol"]
+            id = port_data["@portid"]
+            state = port_data["state"]["@state"]
+            service = port_data["service"]
+            reason = port_data["state"]["@reason"]
 
-        scripts = []
+            scripts = []
 
-        if "script" in port_data:
-            if "@id" in port_data["script"]:
-                scripts.append({"id": port_data["script"]["@id"]})
-            else:
-                for script in port_data["script"]:
-                    scripts.append(script["@id"])
+            if "script" in port_data:
+                if "@id" in port_data["script"]:
+                    scripts.append({"id": port_data["script"]["@id"]})
+                else:
+                    for script in port_data["script"]:
+                        scripts.append(script["@id"])
 
-        visible_ports.append(Port(id, protocol, state, service, reason, scripts))
+            visible_ports.append(Port(id, protocol, state, service, reason, scripts))
 
-    return NmapResult(host_names, ports=visible_ports)
+        return NmapResult(host_names, ports=visible_ports)
+    
+    return NmapResult(host_names, ports=None)
