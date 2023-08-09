@@ -3,3 +3,5 @@ untracked/*
 */tests_runner/__pycache__
 */tests_runner/*/__pycache__
 docker_volume/*
+.env
+.envrc

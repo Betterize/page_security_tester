@@ -2,9 +2,11 @@ from wapiti import run_wapiti
 from namp import run_namp
 from utils.locations import test_results_dir
 from utils.configs import Configuration
+from schemas.security_scan import SecurityScanRequest
+from schemas.security_scan import TestStatus
 import time
 import redis
-
+from utils.send_strapi_info import update_scan_status
 
 def run_tests(url: str):
     result_dir = test_results_dir(url)
@@ -37,12 +39,16 @@ def run_service():
         print("starting reading from queue...")
         _, message = redis_client.brpop(config.REDIS_QUEUE_NAME)
         decoded_message = message.decode('utf-8')
+        
         print(f"Odczytano wiadomość z kolejki: {decoded_message}")
 
         if decoded_message == "quit":
             print("Exit triggered by quit message")
             return
         
+        current_scan: SecurityScanRequest = SecurityScanRequest.from_json(decoded_message)
+        
+        update_scan_status(id=current_scan.id, status=TestStatus.running)
         run_tests(url=decoded_message)
 
 
