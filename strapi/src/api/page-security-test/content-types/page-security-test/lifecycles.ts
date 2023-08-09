@@ -43,7 +43,9 @@ export default {
     );
 
     try {
-      await notify_tests_runner(result.website);
+      await notify_tests_runner(
+        JSON.stringify({ id: result.id, website: result.website })
+      );
       log(
         collection,
         HookState.afterCreate,
