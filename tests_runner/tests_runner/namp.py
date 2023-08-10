@@ -14,8 +14,8 @@ def run_namp(url: str, result_dir: str):
 
 def start_nmap_test(url: str, filename: str) -> None:
     nmap_command: list[str] = [
-        'nmap', '-v', '-sC', '-A', '-sV', '--max-retries=1', '-p1-65355', '--host-timeout=720s', url.replace("https://", "").replace("http://", ""), 
-        '-Pn', '-oX', filename 
+        'nmap', '-v', '-sC', '-A', '-sV', '--max-retries=1', '-p1-65355', '--host-timeout=720s',
+        url.replace("https://", "").replace("http://", ""), '-Pn', '-oX', filename
     ]
 
     try:
@@ -36,15 +36,14 @@ def select_needed(xml_dict) -> NmapResult:
     if "host" not in xml_dict["nmaprun"]:
         # execute if website does not exists
         return NmapResult(host_names=None, ports=None)
-    
+
     host = xml_dict["nmaprun"]["host"]
 
     host_names: list[HostName] = [
-        HostName(name=host["@name"], type=host["@type"])
-        for host in (host["hostnames"]["hostname"])
+        HostName(name=host["@name"], type=host["@type"]) for host in (host["hostnames"]["hostname"])
     ]
 
-    if  "ports" in xml_dict["nmaprun"]["host"]:
+    if "ports" in xml_dict["nmaprun"]["host"]:
         visible_ports: list[Port] = []
 
         for port_data in xml_dict["nmaprun"]["host"]["ports"]["port"]:
@@ -66,5 +65,5 @@ def select_needed(xml_dict) -> NmapResult:
             visible_ports.append(Port(id, protocol, state, service, reason, scripts))
 
         return NmapResult(host_names, ports=visible_ports)
-    
+
     return NmapResult(host_names, ports=None)

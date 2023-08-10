@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 from enum import Enum
 
+
 @dataclass_json
 @dataclass
 class ScanStatus(Enum):
@@ -9,6 +10,7 @@ class ScanStatus(Enum):
     running = 'running'
     finished = 'finished'
     failed = 'failed'
+
 
 @dataclass_json
 @dataclass
@@ -25,16 +27,26 @@ class TestTool(Enum):
     wapiti = 'wapiti'
     nmap = 'nmap'
 
-
 @dataclass_json
 @dataclass
-class TestResult:
-    id: int
+class NewSecurityTest:
     tool: TestTool
     scan_time: str | None
     command: str | None
     result: 'typing.Any'
     status: TestStatus
+
+@dataclass_json
+@dataclass
+class SecurityTest(NewSecurityTest):
+    id: int
+
+
+@dataclass_json
+@dataclass
+class AddSecurityTestResult:
+    new_test_id: int
+    tests_results: list[SecurityTest]
 
 
 @dataclass_json
@@ -47,14 +59,14 @@ class SecurityScanAttributes:
     updatedAt: str
     error_msg: str | None
     status: str
-    tests_results: list[TestResult]
+    tests_results: list[SecurityTest]
 
 
 @dataclass_json
 @dataclass
 class SecurityScan:
     id: int
-    attributes: SecurityScanAttributes 
+    attributes: SecurityScanAttributes
 
 
 @dataclass_json

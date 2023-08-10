@@ -9,7 +9,7 @@ class WapitiScope(Enum):
     domain = 'domain'
 
 
-def run_wapiti(url: str, result_dir: str, scope: WapitiScope):
+def run_wapiti(url: str, result_dir: str, scope: WapitiScope = WapitiScope.domain):
     create_file_with_path(f'{result_dir}', 'wapiti.json')
     start_wapiti_test(url=url, scope=scope, filename=f'{result_dir}/wapiti.json')
     return test_result(f'{result_dir}/wapiti.json')
