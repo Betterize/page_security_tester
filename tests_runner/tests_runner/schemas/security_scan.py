@@ -27,6 +27,7 @@ class TestTool(Enum):
     wapiti = 'wapiti'
     nmap = 'nmap'
 
+
 @dataclass_json
 @dataclass
 class NewSecurityTest:
@@ -35,6 +36,7 @@ class NewSecurityTest:
     command: str | None
     result: 'typing.Any'
     status: TestStatus
+
 
 @dataclass_json
 @dataclass

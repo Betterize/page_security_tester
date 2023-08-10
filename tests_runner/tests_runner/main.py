@@ -1,38 +1,67 @@
 from wapiti import run_wapiti
-from namp import run_namp
+from nmap import run_nmap, process_result
 from utils.locations import test_results_dir
 from utils.configs import Configuration
-from schemas.security_scan import SecurityScanRequest
-from schemas.security_scan import TestStatus
 import time
 import redis
-from utils.send_strapi_info import update_scan_status, add_test_to_scan
+from schemas.security_scan import TestStatus, SecurityTest, TestTool, NewSecurityTest, SecurityScanRequest
+from utils.send_strapi_info import update_scan_status, add_test_to_scan, update_tests_results
+from exceptions.api import UpdateTestResultsException
 from utils.log import setup_logger
 from logging import log, INFO, ERROR
 
-from schemas.security_scan import TestStatus, SecurityTest, TestTool
 
 def run_test(scan_id: int, tool: TestTool, tests: list[SecurityTest], url: str, result_dir, fun):
-    # powinno kopnąć błędem jak poniższy kod się nie skończy dobrze
+    log(INFO, f"Starting {tool.value} test")
+
     test_id, tests = add_test_to_scan(scan_id=scan_id, tool=tool, current_test_results=tests)
-    
+
     try:
-        result = fun(url=url, result_dir=result_dir)
-        # update with tests results
+        start_time = time.time()
+        command, result = fun(url=url, result_dir=result_dir)
+        scan_time = "{:.2f}".format(time.time() - start_time)
+
+        log(INFO, f"Finished {tool.value} test after {scan_time}s")
+
+        if test_id is None:
+            new_test = NewSecurityTest(tool=tool,
+                                       scan_time=scan_time,
+                                       command=command,
+                                       result=result,
+                                       status=TestStatus.finished)
+            tests.append(new_test)
+        else:
+            for test in tests:
+                if test["id"] == test_id:
+                    test["scan_time"] = scan_time
+                    test["command"] = command
+                    test["result"] = result
+                    test["status"] = TestStatus.finished.value
+
+        tests = update_tests_results(scan_id=scan_id, test_results=tests)
+        log(INFO, f"Added results of {tool.value} test to scan with id: {scan_id}")
+
+        return tests
+
+    except UpdateTestResultsException as e:
+        log(ERROR, f"Test finish but results not send: {str(e)}")
+
     except Exception as e:
-        # setup test as failed
-        pass
+        log(ERROR, f"Error occurred while running test: {str(e)}")
 
 
 def run_tests(scan_id: int, url: str):
-    
-    result_dir = test_results_dir(url)
+    update_scan_status(scan_id, TestStatus.running)
 
-    tests = []
-    run_test(scan_id, TestTool.wapiti, tests, url, result_dir, run_wapiti)
+    tests = [(TestTool.wapiti, run_wapiti), (TestTool.nmap, run_nmap)]
+    result_dir: str = test_results_dir(url)
 
-    tests = []
-    run_test(scan_id, TestTool.nmap, tests, url, result_dir, run_namp)
+    results = []
+
+    for tool, fun in tests:
+        results = run_test(scan_id, tool, results, url, result_dir, fun)
+
+    update_scan_status(scan_id, TestStatus.finished)
 
 
 def read_from_queue(redis_client: 'typing.any', queue_name: str):
@@ -51,9 +80,7 @@ def read_from_queue(redis_client: 'typing.any', queue_name: str):
             current_scan: SecurityScanRequest = SecurityScanRequest.from_json(decoded_message)
             log(INFO, "Successfully serialized data from queue")
 
-            update_scan_status(id=current_scan.id, status=TestStatus.running)
-
-            #run_tests(url=decoded_message)
+            run_tests(scan_id=current_scan.id, url=current_scan.website)
 
         except Exception as e:
             log(ERROR, f"Error ocurred while running scan. Error: {e}")

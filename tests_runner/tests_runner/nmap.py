@@ -1,15 +1,15 @@
 import subprocess
 from utils.locations import create_file_with_path
-from schemas.namp import HostName, NmapResult, Port
+from schemas.namp import HostName, NmapResult, Port, service_from_dict
 import xmltodict
 
 
-def run_namp(url: str, result_dir: str):
+def run_nmap(url: str, result_dir: str):
     create_file_with_path(f'{result_dir}', 'nmap.xml')
-    start_nmap_test(url=url, filename=f'{result_dir}/nmap.xml')
+    command = start_nmap_test(url=url, filename=f'{result_dir}/nmap.xml')
     final_result = process_result(f'{result_dir}/nmap.xml')
 
-    return final_result
+    return (command, final_result.to_dict())
 
 
 def start_nmap_test(url: str, filename: str) -> None:
@@ -22,6 +22,9 @@ def start_nmap_test(url: str, filename: str) -> None:
         result = subprocess.run(nmap_command, capture_output=True, text=True, check=True)
     except subprocess.CalledProcessError as e:
         print("Error occurred while running nmap scan:", e)
+    finally:
+        command = " ".join(nmap_command)
+        return command
 
 
 def process_result(filename: str) -> NmapResult:
@@ -43,14 +46,14 @@ def select_needed(xml_dict) -> NmapResult:
         HostName(name=host["@name"], type=host["@type"]) for host in (host["hostnames"]["hostname"])
     ]
 
-    if "ports" in xml_dict["nmaprun"]["host"]:
+    if "ports" in xml_dict["nmaprun"]["host"] and "port" in xml_dict["nmaprun"]["host"]["ports"]:
         visible_ports: list[Port] = []
 
         for port_data in xml_dict["nmaprun"]["host"]["ports"]["port"]:
             protocol = port_data["@protocol"]
             id = port_data["@portid"]
             state = port_data["state"]["@state"]
-            service = port_data["service"]
+            service = service_from_dict(port_data["service"])
             reason = port_data["state"]["@reason"]
 
             scripts = []
