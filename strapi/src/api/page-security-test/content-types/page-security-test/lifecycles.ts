@@ -76,6 +76,19 @@ export default {
     const { result } = event;
     log(collection, HookState.afterCreateMany, JSON.stringify(result));
   },
+  async beforeUpdate(event) {
+    const status = event.params.data.status;
+
+    if (status == "finished" || status == "failed") {
+      event.params.data.is_public = true;
+    }
+
+    log(
+      collection,
+      HookState.beforeUpdate,
+      `Updated entry with id: ${event.params.data.id}`
+    );
+  },
   async afterUpdate(event) {
     const { result } = event;
 
