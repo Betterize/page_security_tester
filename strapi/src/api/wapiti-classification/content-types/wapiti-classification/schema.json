@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "wapiti_classifications",
+  "info": {
+    "singularName": "wapiti-classification",
+    "pluralName": "wapiti-classifications",
+    "displayName": "WapitiClassification",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "solution": {
+      "type": "text",
+      "required": true
+    },
+    "references": {
+      "type": "json",
+      "required": true
+    },
+    "wstg": {
+      "type": "json",
+      "required": true
+    }
+  }
+}

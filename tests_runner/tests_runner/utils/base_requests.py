@@ -18,3 +18,9 @@ def get(endpoint: str):
     response = requests.get(f"{rest_api_url}{endpoint}", headers=headers)
 
     return response
+
+
+def create(endpoint: str, data: dict):
+    response = requests.post(f"{rest_api_url}{endpoint}", json={"data": data}, headers=headers)
+
+    return response

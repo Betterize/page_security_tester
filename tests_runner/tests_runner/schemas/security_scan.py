@@ -76,3 +76,14 @@ class SecurityScan:
 class SecurityScanRequest:
     id: int
     website: str
+
+
+
+@dataclass_json
+@dataclass
+class NewWapitiClassification:
+    name: str
+    description: str
+    solution: str
+    references: dict
+    wstg: list[str]

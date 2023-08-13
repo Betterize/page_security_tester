@@ -2,6 +2,7 @@ from wapiti import run_wapiti
 from nmap import run_nmap, process_result
 from utils.locations import test_results_dir
 from utils.configs import Configuration
+from utils.wapiti_classifications import add_classifications
 import time
 import redis
 from schemas.security_scan import TestStatus, SecurityTest, TestTool, NewSecurityTest, SecurityScanRequest
@@ -105,6 +106,7 @@ def run_service():
 
 if __name__ == "__main__":
     setup_logger()
+    add_classifications()
 
     try:
         run_service()
