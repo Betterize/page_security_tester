@@ -8,6 +8,10 @@ https://linuxsecurity.com/features/complete-guide-to-using-wapiti-web-vulnerabil
 
 https://nabla-c0d3.github.io/sslyze/documentation/installation.html
 
+```
+poetry export -f requirements.txt --output requirements.txt
+```
+
 ## namp test config
 
 | opcja               | co robi                                                                                                                                                        |

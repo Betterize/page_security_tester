@@ -1,8 +1,0 @@
-node_modules/
-src/extensions/strapi-plugin-react-editorjs/node_modules/
-untracked/
-data.db
-docker-compose.production.yaml
-docker-compose.yaml
-Dockerfile
-Dockerfile.prod

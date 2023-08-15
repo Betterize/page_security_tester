@@ -6,52 +6,69 @@ version: "3.8"
 services:
   redis:
     image: bitnami/redis:7.0.10
-    ports:
-      - 6379:6379
     volumes:
       - ./redis/redis.conf:/redis.conf
       - ./docker_volume/redis/data:/bitnami/redis/data
     command: ["redis-server", "./redis.conf"]
+    networks:
+      - app-network
 
-  # strapi:
-  #   container_name: ${APP_NAME}-strapi
-  #   image: ${APP_NAME}-strapi-development
-  #   build:
-  #     context: .
-  #     dockerfile: ./strapi/Dockerfile
-  #   restart: unless-stopped
-  #   env_file: ./strapi/.env
-  #   depends_on:
-  #     - db
-  #   volumes:
-  #     - ./strapi/src/components:/opt/app/src/components
-  #     - ./strapi/src/admin:/opt/app/src/admin
-  #     - ./strapi/src/api:/opt/app/src/api
-  #     - ./strapi/public/uploads:/opt/app/public/uploads
-  #     - ./strapi/logs:/opt/app/logs
+  strapi:
+    container_name: ${APP_NAME}-strapi
+    image: ${APP_NAME}-strapi-development
+    build:
+      context: ./strapi
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    env_file: strapi/.env
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./strapi/src/components:/opt/app/src/components
+      - ./strapi/src/admin:/opt/app/src/admin
+      - ./strapi/src/api:/opt/app/src/api
+      - ./strapi/public/uploads:/opt/app/public/uploads
+      - ./strapi/logs:/opt/app/logs
+    networks:
+      - app-network
+    ports:
+      - "${STRAPI_HOST_PORT}:1337"
 
-  #   networks:
-  #     app-network:
-  #       #ipv4_address: 10.5.0.20 # assigns static ip; see nginx.conf
-  #   ports:
-  #     - "1337:1337"
+  db:
+    container_name: ${APP_NAME}-db
+    restart: unless-stopped
+    env_file: .env
+    image: bitnami/postgresql:15.2.0-debian-11-r30
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - ./docker_volume/postgres:/bitnami/postgresql
+    ports:
+      - "${DATABASE_HOST_PORT}:5432"
+    networks:
+      - app-network
 
-  # db:
-  #   container_name: ${APP_NAME}-db
-  #   restart: unless-stopped
-  #   env_file: .env
-  #   image: bitnami/postgresql:15.2.0-debian-11-r30
-  #   environment:
-  #     POSTGRES_USER: ${DATABASE_USERNAME}
-  #     POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-  #     POSTGRES_DB: ${DATABASE_NAME}
-  #   volumes:
-  #     - ./docker_volume/postgres:/bitnami/postgresql
-  #   ports:
-  #     - "${DATABASE_HOST_PORT}:5432"
-  #   networks:
-  #     - app-network
-# networks:
-#   app-network:
-#     name: ${APP_NAME}-network
-#     external: true
+  tests_runner:
+    container_name: ${APP_NAME}-tests_runner
+    image: ${APP_NAME}-tests_runner
+    build:
+      context: ./tests_runner
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    env_file: ./tests_runner/.env
+    depends_on:
+      - strapi
+      - redis
+    volumes:
+      - ./tests_runner/results:/tests_runner/results
+      - ./tests_runner/logs:/tests_runner/logs
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    name: ${APP_NAME}-network
+    external: true
