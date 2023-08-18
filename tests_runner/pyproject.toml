@@ -14,6 +14,7 @@ dataclasses-json = "0.5.7"
 redis = "^4.6.0"
 requests = "^2.31.0"
 python-json-logger = "^2.0.7"
+pytest = "^7.4.0"
 
 
 [build-system]

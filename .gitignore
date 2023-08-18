@@ -4,5 +4,6 @@ untracked/*
 */tests_runner/*/__pycache__
 tests_runner/logs/*
 docker_volume/*
+*/tests/__pycache__
 .env
 .envrc

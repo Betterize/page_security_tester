@@ -5,3 +5,7 @@ format WHAT:
 #run formater on whole project
 format-all:
     poetry run yapf -i --recursive tests_runner/*
+
+
+test-all:
+    poetry run pytest -vv
