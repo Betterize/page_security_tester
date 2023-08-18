@@ -1,5 +1,6 @@
 import os
 
+
 class Configuration:
     _instance = None
 
@@ -20,19 +21,19 @@ class Configuration:
     @property
     def REDIS_HOST(self):
         return self._REDIS_HOST
-    
+
     @property
     def REDIS_PORT(self):
         return self._REDIS_PORT
-    
+
     @property
     def REDIS_QUEUE_NAME(self):
         return self._REDIS_QUEUE_NAME
-    
+
     @property
     def STRAPI_BASE_URL(self):
         return self._STRAPI_BASE_URL
-    
+
     @property
     def STRAPI_TOKEN(self):
         return self._STRAPI_TOKEN

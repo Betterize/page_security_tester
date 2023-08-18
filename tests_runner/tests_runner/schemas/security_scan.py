@@ -78,7 +78,6 @@ class SecurityScanRequest:
     website: str
 
 
-
 @dataclass_json
 @dataclass
 class NewWapitiClassification:
