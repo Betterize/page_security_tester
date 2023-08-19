@@ -1,28 +1,25 @@
-from wapiti import run_wapiti
-from nmap import run_nmap, process_result
 from utils.locations import test_results_dir
-from utils.configs import Configuration
-from utils.wapiti_classifications import add_classifications
-import time
-import redis
-from schemas.security_scan import TestStatus, SecurityTest, TestTool, NewSecurityTest, SecurityScanRequest
-from utils.send_strapi_info import update_scan_status, add_test_to_scan, update_tests_results
+from strapi.wapiti_classifications import add_classifications
+from schemas.security_scan import TestStatus, SecurityTest, NewSecurityTest
+from strapi.send_strapi_info import update_scan_status, add_test_to_scan, update_tests_results
 from exceptions.api import UpdateTestResultsException
 from utils.log import setup_logger
 from logging import log, INFO, ERROR
+from queue_worker import read_from_queue
+from scan_tools.nmap import NmapScan
+from scan_tools.wapiti import WapitiScan
+from scan_tools.scan_tool import ScanTool
 
 
-def run_test(scan_id: int, tool: TestTool, tests: list[SecurityTest], url: str, result_dir, fun):
+def run_test(scan_id: int, tests_results: list[SecurityTest], scan_tool: ScanTool):
+    tool = scan_tool.tool_name()
+
     log(INFO, f"Starting {tool.value} test")
 
-    test_id, tests = add_test_to_scan(scan_id=scan_id, tool=tool, current_test_results=tests)
+    test_id, tests_results = add_test_to_scan(scan_id=scan_id, tool=tool, current_test_results=tests_results)
 
     try:
-        start_time = time.time()
-        command, result = fun(url=url, result_dir=result_dir)
-        scan_time = "{:.2f}".format(time.time() - start_time)
-
-        log(INFO, f"Finished {tool.value} test after {scan_time}s")
+        command, result, scan_time = scan_tool.run_scan()
 
         if test_id is None:
             new_test = NewSecurityTest(tool=tool,
@@ -30,19 +27,19 @@ def run_test(scan_id: int, tool: TestTool, tests: list[SecurityTest], url: str, 
                                        command=command,
                                        result=result,
                                        status=TestStatus.finished)
-            tests.append(new_test)
+            tests_results.append(new_test)
         else:
-            for test in tests:
+            for test in tests_results:
                 if test["id"] == test_id:
                     test["scan_time"] = scan_time
                     test["command"] = command
                     test["result"] = result
                     test["status"] = TestStatus.finished.value
 
-        tests = update_tests_results(scan_id=scan_id, test_results=tests)
+        tests_results = update_tests_results(scan_id=scan_id, test_results=tests_results)
         log(INFO, f"Added results of {tool.value} test to scan with id: {scan_id}")
 
-        return tests
+        return tests_results
 
     except UpdateTestResultsException as e:
         log(ERROR, f"Test finish but results not send: {str(e)}")
@@ -54,51 +51,24 @@ def run_test(scan_id: int, tool: TestTool, tests: list[SecurityTest], url: str, 
 def run_tests(scan_id: int, url: str):
     update_scan_status(scan_id, TestStatus.running)
 
-    tests = [(TestTool.wapiti, run_wapiti), (TestTool.nmap, run_nmap)]
     result_dir: str = test_results_dir(url)
+
+    tests: list[ScanTool] = [
+        WapitiScan(result_directory=result_dir, url=url),
+        NmapScan(result_directory=result_dir, url=url)
+    ]
 
     results = []
 
-    for tool, fun in tests:
-        results = run_test(scan_id, tool, results, url, result_dir, fun)
+    for scan_tool in tests:
+        results = run_test(scan_id=scan_id, tests_results=results, scan_tool=scan_tool)
 
     update_scan_status(scan_id, TestStatus.finished)
 
 
-def read_from_queue(redis_client: 'typing.any', queue_name: str):
-    while True:
-        log(INFO, "--- ready to accept messages ---")
-
-        _, message = redis_client.brpop(queue_name)
-        decoded_message = message.decode('utf-8')
-        log(INFO, f"received message: {decoded_message}")
-
-        if decoded_message == "quit":
-            log(INFO, "--- Exit triggered by quit message ---")
-            return
-
-        try:
-            current_scan: SecurityScanRequest = SecurityScanRequest.from_json(decoded_message)
-            log(INFO, "Successfully serialized data from queue")
-
-            run_tests(scan_id=current_scan.id, url=current_scan.website)
-
-        except Exception as e:
-            log(ERROR, f"Error ocurred while running scan. Error: {e}")
-            update_scan_status(id=current_scan.id, status=TestStatus.failed, error_ms=e)
-
-
 def run_service():
-    log(INFO, "application started")
-
-    config = Configuration()
-    log(INFO, f"Successfully loaded configuration")
-
     try:
-        redis_client = redis.Redis(host=config.REDIS_HOST, port=config.REDIS_PORT)
-        log(INFO, "Successfully created redis client")
-
-        read_from_queue(redis_client=redis_client, queue_name=config.REDIS_QUEUE_NAME)
+        read_from_queue(run_tests=run_tests)
 
     except Exception as e:
         log(ERROR, f"Unable to create redis client: {e}")
@@ -109,6 +79,7 @@ if __name__ == "__main__":
     add_classifications()
 
     try:
+        log(INFO, "application started")
         run_service()
 
     except Exception as e:

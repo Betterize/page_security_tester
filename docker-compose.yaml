@@ -12,6 +12,8 @@ services:
     command: ["redis-server", "./redis.conf"]
     networks:
       - app-network
+    ports:
+      - "6379:6379"
 
   strapi:
     container_name: ${APP_NAME}-strapi

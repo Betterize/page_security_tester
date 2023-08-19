@@ -1,5 +1,5 @@
 import requests
-from utils.configs import Configuration
+from configs import Configuration
 
 config = Configuration()
 

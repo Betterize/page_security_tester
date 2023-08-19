@@ -1,4 +1,4 @@
-from utils.base_requests import get, create
+from strapi.basic_requests import get, create
 from schemas.security_scan import NewWapitiClassification
 from logging import log, INFO, ERROR
 import json
@@ -11,8 +11,7 @@ def does_classifications_exists() -> bool:
 
 def add_classification_to_strapi(data: NewWapitiClassification):
     response = create(endpoint="/wapiti-classifications", data=data)
-    print(f"status code: {response.status_code}")
-    print(response.reason)
+    log(INFO, f"Added wapiti classification: {data.name} ")
 
 
 def add_classifications():

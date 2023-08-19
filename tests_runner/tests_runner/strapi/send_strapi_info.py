@@ -1,14 +1,7 @@
-from utils.base_requests import update
-from schemas.security_scan import TestStatus, SecurityTest, AddSecurityTestResult, TestTool
+from strapi.basic_requests import update
+from schemas.security_scan import TestStatus, SecurityTest, TestTool
 from exceptions.api import UpdateTestResultsException
 from logging import log, INFO, ERROR
-
-
-def update_test_status(scan_id: int, test_id: int, status: TestStatus,
-                       current_test_results: list[SecurityTest]) -> list[SecurityTest]:
-    # w podanej liście wyszukuje test o podanym id i podmienia mu status
-    # zwraca listę test results z odpowiedzi
-    pass
 
 
 def update_scan_status(id: int, status: TestStatus, error_ms: str | None = None):
@@ -18,7 +11,7 @@ def update_scan_status(id: int, status: TestStatus, error_ms: str | None = None)
         data["error_ms"] = error_ms
 
     try:
-        update(f"/page-security-tests/{id}", data)
+        response = update(f"/page-security-tests/{id}", data)
         log(INFO, f"Successfully updated scan entry. ID: {id}, send_data: {data}")
 
     except Exception as e:
