@@ -1,6 +1,7 @@
 from scan_tools.scan_tool import ScanTool
 from exceptions.scan_tools import WapitiJsonDecodingFailed
 from schemas.security_scan import TestTool
+from schemas.wapiti import WapitiResult
 from enum import Enum
 import json
 
@@ -26,7 +27,7 @@ class WapitiScan(ScanTool):
     def tool_name(self) -> TestTool:
         return TestTool.wapiti
 
-    def process_result(self):
+    def process_result(self) -> WapitiResult:
         try:
             with open(self.result_path()) as json_file:
                 data = json.load(json_file)

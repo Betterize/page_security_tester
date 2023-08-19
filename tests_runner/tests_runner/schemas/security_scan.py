@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 from enum import Enum
+from schemas.nmap import NmapResultDict
+from schemas.wapiti import WapitiResult
+from typing import Union
 
 
 @dataclass_json
@@ -86,3 +89,10 @@ class NewWapitiClassification:
     solution: str
     references: dict
     wstg: list[str]
+
+
+@dataclass
+class RunScanResult:
+    command: str
+    data: Union[NmapResultDict, WapitiResult]
+    scan_time: str

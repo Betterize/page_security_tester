@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
+from typing import TypedDict, Any
 
 
 @dataclass_json
@@ -47,5 +48,10 @@ class Port:
 @dataclass_json
 @dataclass
 class NmapResult:
+    host_names: list[HostName] | None
+    ports: list[Port] | None
+
+
+class NmapResultDict(TypedDict):
     host_names: list[HostName] | None
     ports: list[Port] | None

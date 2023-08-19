@@ -1,7 +1,10 @@
 import subprocess
 from utils.locations import create_file_with_path
 from exceptions.scan_tools import MethodNotImplemented, ScanTestFailed
-from schemas.security_scan import TestTool
+from schemas.security_scan import TestTool, RunScanResult
+from schemas.nmap import NmapResultDict
+from schemas.wapiti import WapitiResult
+from typing import Union
 import time
 from logging import log, INFO
 
@@ -16,7 +19,7 @@ class ScanTool:
         self.result_directory = result_directory
         self.command = command
 
-    def run_scan(self):
+    def run_scan(self) -> RunScanResult:
         create_file_with_path(f'{self.result_directory}', self.filename)
 
         start_time = time.time()
@@ -28,9 +31,9 @@ class ScanTool:
 
         log(INFO, f"Finished {self.tool_name().value} test after {scan_time}s")
 
-        return (" ".join(self.command), final_result, scan_time)
+        return RunScanResult(command=" ".join(self.command), data=final_result, scan_time=scan_time)
 
-    def process_result(self):
+    def process_result(self) -> Union[NmapResultDict, WapitiResult]:
         raise MethodNotImplemented(method="process_result")
 
     def tool_name(self) -> TestTool:

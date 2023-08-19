@@ -1,7 +1,7 @@
 import xmltodict
 from schemas.security_scan import TestTool
 from scan_tools.scan_tool import ScanTool
-from schemas.namp import HostName, NmapResult, Port, service_from_dict
+from schemas.nmap import HostName, NmapResult, Port, service_from_dict, NmapResultDict
 
 
 class NmapScan(ScanTool):
@@ -22,7 +22,7 @@ class NmapScan(ScanTool):
     def tool_name(self) -> TestTool:
         return TestTool.nmap
 
-    def process_result(self):
+    def process_result(self) -> NmapResultDict:
         with open(self.result_path(), 'r') as xml_file:
             xml_data = xml_file.read()
             self.xml_dict = xmltodict.parse(xml_data)

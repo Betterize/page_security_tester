@@ -14,8 +14,8 @@ def update(endpoint: str, data: dict):
     return response
 
 
-def get(endpoint: str):
-    response = requests.get(f"{rest_api_url}{endpoint}", headers=headers)
+async def get(endpoint: str):
+    response = await requests.get(f"{rest_api_url}{endpoint}", headers=headers)
 
     return response
 

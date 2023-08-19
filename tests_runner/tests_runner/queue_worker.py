@@ -2,11 +2,12 @@ from logging import log, INFO, ERROR
 from config import Configuration
 from strapi.send_strapi_info import update_scan_status
 from schemas.security_scan import TestStatus, SecurityScanRequest
+from typing import Callable
 
 import redis
 
 
-def read_from_queue(run_tests):
+def read_from_queue(run_tests: Callable[[int, str], None]):
     config = Configuration()
 
     redis_client = redis.Redis(host=config.REDIS_HOST, port=config.REDIS_PORT)
