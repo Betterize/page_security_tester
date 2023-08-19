@@ -9,7 +9,7 @@ def create_file_with_path(directory: str, filename: str):
         pass
 
 
-def test_results_dir(url: str) -> str:
+def results_dir(url: str) -> str:
     clean_url: str = url.replace("https://", "").replace("http://", "")
     creation_time: str = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M")
 

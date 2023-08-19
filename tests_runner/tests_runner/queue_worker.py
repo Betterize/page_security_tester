@@ -1,5 +1,5 @@
 from logging import log, INFO, ERROR
-from configs import Configuration
+from config import Configuration
 from strapi.send_strapi_info import update_scan_status
 from schemas.security_scan import TestStatus, SecurityScanRequest
 

@@ -1,12 +1,14 @@
 import os
 import pathlib
-
+from config import Configuration
 import logging.config
 from logging.handlers import TimedRotatingFileHandler
 import datetime
 from pythonjsonlogger import jsonlogger
 
 log_directory = 'logs'
+
+config = Configuration()
 
 LOGGING_CONFIG = {
     'version': 1,
@@ -36,7 +38,7 @@ LOGGING_CONFIG = {
     'loggers': {
         '': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': config.LOG_LEVEL,
             'propagate': True,
         },
     },

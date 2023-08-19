@@ -12,6 +12,7 @@ class Configuration:
             cls._instance._REDIS_QUEUE_NAME = os.environ.get('REDIS_QUEUE_NAME', 'security_tests')
             cls._instance._STRAPI_BASE_URL = os.environ.get('STRAPI_BASE_URL', 'http://127.0.0.1:1337')
             cls._instance._STRAPI_TOKEN = os.environ.get('STRAPI_TOKEN')
+            cls._instance._LOG_LEVEL = os.environ.get('LOG_LEVEL', 'DEBUG')
 
         if cls._instance._STRAPI_TOKEN is None:
             raise ValueError("No STRAPI_TOKEN env variable found")
@@ -37,3 +38,7 @@ class Configuration:
     @property
     def STRAPI_TOKEN(self):
         return self._STRAPI_TOKEN
+
+    @property
+    def LOG_LEVEL(self):
+        return self._LOG_LEVEL

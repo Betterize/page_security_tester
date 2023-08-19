@@ -1,4 +1,4 @@
-from tests_runner.configs import Configuration
+from tests_runner.config import Configuration
 import pytest
 import os
 
@@ -9,7 +9,8 @@ def setup_base_config():
 def test_no_strapi_token():
     Configuration._instance = None
 
-    del os.environ['STRAPI_TOKEN']
+    if 'STRAPI_TOKEN' in os.environ:
+        del os.environ['STRAPI_TOKEN']
 
     with pytest.raises(ValueError):
         config = Configuration()

@@ -1,5 +1,5 @@
 import requests
-from configs import Configuration
+from config import Configuration
 
 config = Configuration()
 

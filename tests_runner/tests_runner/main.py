@@ -1,4 +1,4 @@
-from utils.locations import test_results_dir
+from utils.locations import results_dir
 from strapi.wapiti_classifications import add_classifications
 from schemas.security_scan import TestStatus, SecurityTest, NewSecurityTest
 from strapi.send_strapi_info import update_scan_status, add_test_to_scan, update_tests_results
@@ -51,7 +51,7 @@ def run_test(scan_id: int, tests_results: list[SecurityTest], scan_tool: ScanToo
 def run_tests(scan_id: int, url: str):
     update_scan_status(scan_id, TestStatus.running)
 
-    result_dir: str = test_results_dir(url)
+    result_dir: str = results_dir(url)
 
     tests: list[ScanTool] = [
         WapitiScan(result_directory=result_dir, url=url),
