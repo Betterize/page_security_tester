@@ -20,18 +20,22 @@ class ScanTool:
         self.command = command
 
     def run_scan(self) -> RunScanResult:
-        create_file_with_path(f'{self.result_directory}', self.filename)
+        try:
+            create_file_with_path(f'{self.result_directory}', self.filename)
 
-        start_time = time.time()
+            start_time = time.time()
 
-        self.scan()
-        final_result = self.process_result()
+            self.scan()
+            final_result = self.process_result()
 
-        scan_time = "{:.2f}".format(time.time() - start_time)
+            scan_time = "{:.2f}".format(time.time() - start_time)
 
-        log(INFO, f"Finished {self.tool_name().value} test after {scan_time}s")
+            log(INFO, f"Finished {self.tool_name().value} test after {scan_time}s")
 
-        return RunScanResult(command=" ".join(self.command), data=final_result, scan_time=scan_time)
+            return RunScanResult(command=" ".join(self.command), data=final_result, scan_time=scan_time)
+
+        except Exception as e:
+            raise
 
     def process_result(self) -> Union[NmapResultDict, WapitiResult]:
         raise MethodNotImplemented(method="process_result")

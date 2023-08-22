@@ -1,23 +1,24 @@
 from queue_worker import read_from_queue
+from exceptions.api import CustomFatalException
+from exceptions.scan_tools import ScanTestFailed
 from scan_tools.nmap import NmapScan
 from scan_tools.wapiti import WapitiScan
 from scan_tools.scan_tool import ScanTool
 from schemas.security_scan import TestStatus, SecurityTest, NewSecurityTest, RunScanResult, TestTool
 from strapi.send_strapi_info import update_scan_status, add_test_to_scan
 from strapi.send_strapi_info import update_tests_results as strapi_update_tests_results
-from exceptions.api import UpdateTestResultsException
 from utils.locations import results_dir
 from logging import log, INFO, ERROR
 
 
 def update_tests_results(scan_id: int, test_id: int | None, tool: TestTool, tests_results: list[SecurityTest],
-                         scan_result: RunScanResult) -> list[SecurityTest]:
+                         scan_result: RunScanResult, status: TestStatus) -> list[SecurityTest]:
     if test_id is None:
         new_test = NewSecurityTest(tool=tool,
                                    scan_time=scan_result.scan_time,
                                    command=scan_result.command,
                                    result=scan_result.data,
-                                   status=TestStatus.finished)
+                                   status=status)
         tests_results.append(new_test)
     else:
         for test in tests_results:
@@ -25,7 +26,7 @@ def update_tests_results(scan_id: int, test_id: int | None, tool: TestTool, test
                 test["scan_time"] = scan_result.scan_time
                 test["command"] = scan_result.command
                 test["result"] = scan_result.data
-                test["status"] = TestStatus.finished.value
+                test["status"] = status.value
 
     tests_results = strapi_update_tests_results(scan_id=scan_id, test_results=tests_results)
     log(INFO, f"Added results of {tool.value} test to scan with id: {scan_id}")
@@ -38,19 +39,24 @@ def run_test(scan_id: int, tests_results: list[SecurityTest], scan_tool: ScanToo
 
     log(INFO, f"Starting {tool.value} test")
 
-    test_id, tests_results = add_test_to_scan(scan_id=scan_id, tool=tool, current_test_results=tests_results)
-
     try:
-        scan_result = scan_tool.run_scan()
-        tests_results = update_tests_results(scan_id, test_id, tool, tests_results, scan_result)
+        test_id, tests_results = add_test_to_scan(scan_id=scan_id,
+                                                  tool=tool,
+                                                  current_test_results=tests_results)
 
-        return tests_results
+        try:
+            scan_result = scan_tool.run_scan()
+            tests_results = update_tests_results(scan_id, test_id, tool, tests_results, scan_result,
+                                                 TestStatus.finished)
 
-    except UpdateTestResultsException as e:
-        log(ERROR, f"Test finish but results not send: {str(e)}")
+        except ScanTestFailed as e:
+            log(ERROR, f"Exception occurred while running {tool.value} test. Message: {str(e)}")
+            tests_results = update_tests_results(scan_id, test_id, tool, tests_results, scan_result,
+                                                 TestStatus.failed)
 
-    except Exception as e:
-        log(ERROR, f"Error occurred while running test: {str(e)}")
+    except CustomFatalException as e:
+        log(ERROR, f"CustomFatalException occurred while running {tool.value} test. Message: {str(e)}")
+        raise
 
     return tests_results
 
@@ -77,5 +83,5 @@ def run_service():
     try:
         read_from_queue(run_tests=run_tests)
 
-    except Exception as e:
-        log(ERROR, f"Unable to create redis client: {e}")
+    except CustomFatalException as e:
+        log(ERROR, f"CustomFatalException occurred: {e}")

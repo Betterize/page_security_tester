@@ -5,7 +5,7 @@ from runner import run_service
 
 if __name__ == "__main__":
     setup_logger()
-    add_classifications()
+    #add_classifications()
 
     try:
         log(INFO, "application started")
