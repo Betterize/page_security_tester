@@ -7,7 +7,7 @@ from typing import Callable
 import time
 import redis
 
-from redis.exceptions import RedisError, ChildDeadlockedError, RedisClusterException
+from redis.exceptions import RedisError
 
 
 def serialize_message(message: bytes) -> SecurityScanRequest | None:
