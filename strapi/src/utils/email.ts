@@ -4,6 +4,8 @@ import handlebars from "handlebars";
 export enum EmailType {
   NotifyAdministrator = "notify_administrator",
   TestFinished = "test_finished",
+  // ScanFailed = "scan_failed",
+  ScanFinished = "scan_finished",
 }
 
 interface NotifyAdmin {
@@ -39,7 +41,7 @@ var templates = load_templates();
 export async function sendEmail(data: Email, type: EmailType) {
   await strapi.plugins["email"].services.email.send({
     to: data.to,
-    from: data.from, // single sender verification in SendGrid
+    from: data.from,
     subject: templates[type].subject,
     html: templates[type].body(data.template_data),
   });

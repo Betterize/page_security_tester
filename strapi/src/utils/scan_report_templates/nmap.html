@@ -1,0 +1,41 @@
+<div class="test_results">
+    <div>
+        <h2 class="section_title">nmap
+            results</h2>
+        <p class="tool_description">Network Mapper stands as a
+            versatile and essential network
+            scanning tool designed to comprehensively investigate
+            and
+            evaluate the security posture of networked systems. By
+            meticulously probing the open ports, services, and
+            operating
+            systems of networked devices, Nmap aids in identifying
+            potential entry points that malicious actors could
+            exploit.
+        </p>
+    </div>
+    <!-- HOSTS -->
+    <div>
+        <h3 class="subsection_title">hosts</h3>
+        <div
+            style="display: flex;
+            flex-wrap: wrap;">
+            <!-- THIS PART WILL BE INSERTED FROM CODE -->
+            {{#each hosts}}
+            {{ this }}
+            {{/each}}
+        </div>
+    </div>
+    <!-- PORTS -->
+    <div style="max-width: 100%;">
+        <h3 class="subsection_title">ports</h3>
+        <div
+            style>
+            <!-- THIS PART WILL BE INSERTED FROM CODE -->
+            {{#each ports}}
+            {{ this }}
+            {{/each}}
+        </div>
+    </div>
+
+</div>

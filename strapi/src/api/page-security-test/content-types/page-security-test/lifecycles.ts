@@ -3,7 +3,9 @@ import { notify_tests_runner } from "../../../../utils/queue";
 import {
   notify_administrator,
   notify_about_test_finish,
+  sendEmail,
 } from "../../../../utils/email";
+import { buildReport, ScanReport } from "../../../../utils/scan_report";
 
 const collection = "page-security-test";
 
@@ -98,8 +100,20 @@ export default {
       `Updated entry with id: ${result.id}`
     );
 
+    const entry = await strapi.entityService.findOne(
+      "api::page-security-test.page-security-test",
+      result.id,
+      {
+        populate: { tests_results: true },
+      }
+    );
+
+    console.log(entry);
+
+    await buildReport(entry as ScanReport);
+
     if (result.status == "finished") {
-      await notify_about_test_finish();
+      //await notify_about_test_finish();
     }
   },
   async afterUpdateMany(event) {

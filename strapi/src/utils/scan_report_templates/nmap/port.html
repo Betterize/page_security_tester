@@ -1,0 +1,61 @@
+<div
+    class="ports">
+    <div>
+        <h3
+            style="text-transform: uppercase;">port</h3>
+        <div
+            style="display: flex;">
+            <div
+                style="display: grid; font-weight: 400;">
+                <p>number:</p>
+                <p>state:</p>
+                <p>reason:</p>
+                <p>protocol:</p>
+            </div>
+            <div
+                style="display: grid; font-weight: 100; ">
+                <p>{{
+                    port.id }}</p>
+                <p>
+                    {{
+                    port.state
+                    }}</p>
+                <p>{{
+                    port.reason
+                    }}</p>
+                <p>{{
+                    port.protocol
+                    }}</p>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <h3
+            style="text-transform: uppercase;">service</h3>
+        <div
+            style="display: flex;
+                                ">
+            <div
+                style="display: grid; font-weight: 400;">
+                <p>name:</p>
+                <p>product:</p>
+                <p>version:</p>
+                <p>tunnel:</p>
+                <p>method:</p>
+            </div>
+            <div
+                style="font-weight: 100; display: grid; overflow-wrap:anywhere;">
+                <p>{{
+                    port.service.name }}</p>
+                <p>{{
+                    port.service.product }}</p>
+                <p>{{
+                    port.service.version }}</p>
+                <p>{{
+                    port.service.tunnel }}</p>
+                <p>{{port.service.method }}</p>
+            </div>
+        </div>
+    </div>
+</div>
