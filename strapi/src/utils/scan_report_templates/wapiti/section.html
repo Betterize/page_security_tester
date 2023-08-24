@@ -1,0 +1,52 @@
+<div>
+    <h3 class="subsection_title">{{name}}</h3>
+
+    <div class="wapiti_section_content">
+        {{#each data}}
+        <!-- THIS PART WILL BE INSERTED FROM CODE -->
+        {{#unless this.blocks}}
+        <div
+            class="wapiti_empty_category">
+            <h3 class="wapiti_category_title">{{
+                this.key }}</h3>
+            <p style="margin-top: 0rem;">Nothing found in this
+                category</p>
+        </div>
+        {{/unless}}
+
+        <!-- THIS PART WILL BE INSERTED FROM CODE -->
+        {{#if this.blocks}}
+        <div style="width: 100%;">
+            <h3 class="wapiti_category_title">{{this.key}}</h3>
+            <div class="wapiti_category_data">
+                <!-- THIS PART WILL BE INSERTED FROM CODE -->
+                {{#each this.blocks}}
+                <div class="wapiti_category_record">
+                    <!-- THIS PART WILL BE INSERTED FROM CODE -->
+                    {{#each this.fields}}
+                    <div class="wapiti_category_record_data">
+                        <p
+                            class="wapiti_category_record_data title">{{this.name}}</p>
+                        <p
+                            class="wapiti_category_record_data value">{{this.data}}</p>
+                    </div>
+                    {{/each}}
+
+                    <!-- THIS PART WILL BE INSERTED FROM CODE -->
+                    {{#if this.request}}
+                    <div style="padding-top: 1rem;">
+                        <p
+                            class="wapiti_category_record_data title">http_request</p>
+                        <p
+                            class="wapiti_category_record_data value_request">{{this.request}}</p>
+                    </div>
+                    {{/if}}
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{/if}}
+        {{/each}}
+    </div>
+
+</div>

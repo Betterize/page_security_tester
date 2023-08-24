@@ -108,7 +108,7 @@ export default {
       }
     );
 
-    console.log(entry);
+    //console.log(entry);
 
     await buildReport(entry as ScanReport);
 

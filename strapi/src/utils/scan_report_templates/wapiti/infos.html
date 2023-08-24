@@ -1,0 +1,20 @@
+<div
+    style="display: grid;">
+    <h3 class="subsection_title">infos</h3>
+    <table>
+        <!-- THIS PART WILL BE INSERTED FROM CODE -->
+        {{#each infos}}
+        <tr
+            style="text-align: left; ">
+            <td
+                style="width: 3rem;">
+                {{this.name}}:
+            </td>
+            <td
+                style="font-weight: 100; overflow-wrap:break-word; padding: 0.2rem; ">
+                {{this.value}}
+            </td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
