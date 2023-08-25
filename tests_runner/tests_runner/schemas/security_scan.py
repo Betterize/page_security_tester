@@ -57,7 +57,7 @@ class AddSecurityTestResult:
 @dataclass_json
 @dataclass
 class SecurityScanAttributes:
-    is_public: bool
+    accepted_regulations: bool
     website: str
     email: str
     createdAt: str
