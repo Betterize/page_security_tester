@@ -1,5 +1,9 @@
 import fs from "fs";
 import handlebars from "handlebars";
+import {
+  DataToArchive,
+  createArchiveAndCollectContent,
+} from "./files_archiver";
 
 interface ScanTestResult {
   id: number;
@@ -12,7 +16,7 @@ interface ScanTestResult {
 
 export interface ScanReport {
   id: number;
-  is_public: boolean;
+  accepted_regulations: boolean;
   website: string;
   email: string;
   createdAt: string;
@@ -20,6 +24,8 @@ export interface ScanReport {
   error_msg: null | object;
   status: string;
   tests_results: ScanTestResult[];
+  createdBy: Object;
+  updatedBy: Object;
 }
 
 export enum ReportPart {
@@ -161,7 +167,7 @@ function findTestResults(data: ScanReport, test: string) {
 
 // ----------------------------------------------------------
 
-export async function buildReport(data: ScanReport) {
+function buildReport(data: ScanReport) {
   var template_base = {
     email: data.email,
     website: data.website,
@@ -184,4 +190,15 @@ export async function buildReport(data: ScanReport) {
   }
 
   return report_templates["main"](template_base);
+}
+
+// ----------------------------------------------------------
+
+export async function getReport(data: ScanReport) {
+  const report = buildReport(data);
+
+  const result = await createArchiveAndCollectContent([
+    { data: report, file_name: "scan_result.html" },
+  ]);
+  return result;
 }

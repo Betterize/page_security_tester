@@ -12,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "is_public": {
+    "accepted_regulations": {
       "type": "boolean",
       "default": false,
       "required": true

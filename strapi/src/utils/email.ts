@@ -1,10 +1,14 @@
 import fs from "fs";
 import handlebars from "handlebars";
+import nodemailer from "nodemailer";
+import { HookState, log } from "./logger";
+
+// -----------------------------------------------------------
 
 export enum EmailType {
   NotifyAdministrator = "notify_administrator",
   TestFinished = "test_finished",
-  // ScanFailed = "scan_failed",
+  ScanFailed = "scan_failed",
   ScanFinished = "scan_finished",
 }
 
@@ -16,8 +20,10 @@ interface NotifyAdmin {
 export interface Email {
   to: string;
   from: string;
-  template_data: NotifyAdmin | undefined;
+  template_data: NotifyAdmin | undefined | Object;
 }
+
+// -----------------------------------------------------------
 
 function load_templates() {
   const enum_values = Object.values(EmailType) as string[];
@@ -38,6 +44,8 @@ function load_templates() {
 
 var templates = load_templates();
 
+// -----------------------------------------------------------
+
 export async function sendEmail(data: Email, type: EmailType) {
   await strapi.plugins["email"].services.email.send({
     to: data.to,
@@ -46,6 +54,40 @@ export async function sendEmail(data: Email, type: EmailType) {
     html: templates[type].body(data.template_data),
   });
 }
+
+// -----------------------------------------------------------
+
+const transporter = nodemailer.createTransport({
+  host: "pro3.mail.ovh.net",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_FROM,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
+
+export async function sendEmailWithAttachments(
+  data: Email,
+  type: EmailType,
+  attachments: Object[]
+) {
+  const mailOptions = {
+    from: data.from,
+    to: data.to,
+    subject: templates[type].subject,
+    html: templates[type].body(data.template_data),
+    attachments: attachments,
+  };
+
+  transporter.sendMail(mailOptions, (error, _) => {
+    if (error) {
+      log("email with attachments", HookState.none, error);
+    }
+  });
+}
+
+// -----------------------------------------------------------
 
 export async function notify_administrator(message: string) {
   await sendEmail(

@@ -2,10 +2,13 @@ import { log, HookState } from "../../../../utils/logger";
 import { notify_tests_runner } from "../../../../utils/queue";
 import {
   notify_administrator,
-  notify_about_test_finish,
   sendEmail,
+  EmailType,
+  sendEmailWithAttachments,
 } from "../../../../utils/email";
-import { buildReport, ScanReport } from "../../../../utils/scan_report";
+import { getReport, ScanReport } from "../../../../utils/scan_report";
+import { errors } from "@strapi/utils";
+const { ApplicationError } = errors;
 
 const collection = "page-security-test";
 
@@ -36,6 +39,15 @@ async function setup_failed_status(id: number, message: string) {
 }
 
 export default {
+  async beforeCreate(event) {
+    const data = event.params.data;
+
+    if (!data.accepted_regulations) {
+      throw new ApplicationError(
+        "Can not create security scan with not accepted scan regulations"
+      );
+    }
+  },
   async afterCreate(event) {
     const { result } = event;
     log(
@@ -79,10 +91,24 @@ export default {
     log(collection, HookState.afterCreateMany, JSON.stringify(result));
   },
   async beforeUpdate(event) {
-    const status = event.params.data.status;
+    const data = event.params.data;
 
-    if (status == "finished" || status == "failed") {
-      event.params.data.is_public = true;
+    if ("accepted_regulations" in data && !data.accepted_regulations) {
+      throw new ApplicationError("Can not unaccepted scan regulations");
+    }
+
+    const entry = await strapi.entityService.findOne(
+      "api::page-security-test.page-security-test",
+      data.id,
+      {
+        populate: { tests_results: true },
+      }
+    );
+
+    if (entry.status == "finished" || entry.status == "failed") {
+      throw new ApplicationError(
+        `Can not update ${entry.status} page security scan`
+      );
     }
 
     log(
@@ -100,20 +126,38 @@ export default {
       `Updated entry with id: ${result.id}`
     );
 
-    const entry = await strapi.entityService.findOne(
-      "api::page-security-test.page-security-test",
-      result.id,
-      {
-        populate: { tests_results: true },
-      }
-    );
-
-    //console.log(entry);
-
-    await buildReport(entry as ScanReport);
-
     if (result.status == "finished") {
-      //await notify_about_test_finish();
+      try {
+        const content = await getReport(result as ScanReport);
+
+        await sendEmailWithAttachments(
+          {
+            template_data: { website: result.website },
+            to: result.email,
+            from: process.env.EMAIL_FROM,
+          },
+          EmailType.ScanFinished,
+          [
+            {
+              filename: "report.zip",
+              content: content,
+            },
+          ]
+        );
+      } catch (e) {
+        log(collection, HookState.afterUpdate, `Unable to send report: ${e}`);
+      }
+    }
+
+    if (result.status == "failed") {
+      await sendEmail(
+        {
+          template_data: " ",
+          to: result.email,
+          from: process.env.EMAIL_FROM,
+        },
+        EmailType.ScanFailed
+      );
     }
   },
   async afterUpdateMany(event) {

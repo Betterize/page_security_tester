@@ -16,6 +16,7 @@
     "@strapi/strapi": "4.12.1",
     "fs": "^0.0.1-security",
     "handlebars": "^4.7.7",
+    "jszip": "^3.10.1",
     "moment": "^2.29.4",
     "node-fetch": "^2.6.11",
     "pg": "^8.10.0",
