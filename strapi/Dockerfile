@@ -1,5 +1,5 @@
 FROM node:16-bullseye-slim
-ARG NODE_ENV=development
+ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /opt/app
@@ -10,4 +10,4 @@ RUN npm install
 RUN npm run build
 
 EXPOSE 1337
-CMD ["npm", "run", "develop"]
+CMD ["npm", "run", "start"]

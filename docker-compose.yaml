@@ -17,7 +17,7 @@ services:
 
   strapi:
     container_name: ${APP_NAME}-strapi
-    image: ${APP_NAME}-strapi-development
+    image: ${APP_NAME}-strapi-production
     build:
       context: ./strapi
       dockerfile: ./Dockerfile

@@ -19,7 +19,8 @@ class WapitiScan(ScanTool):
         wapiti_command: list[str] = [
             'wapiti', '-u', url, '-f', 'json', '--scope', scope.value, '--no-bugreport', '--flush-session',
             '-o',
-            self.result_path()
+            self.result_path(), '-m',
+            'xss,ssrf,ssl,redirect,permanentxss,http_headers,cookieflags,csp,exec,file'
         ]
 
         self.command = wapiti_command
