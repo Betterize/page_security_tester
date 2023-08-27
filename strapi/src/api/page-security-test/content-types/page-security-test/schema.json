@@ -43,6 +43,16 @@
       ],
       "default": "waiting",
       "required": true
+    },
+    "accepted_marketing": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "personal_data_processing": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

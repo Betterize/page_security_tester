@@ -58,6 +58,8 @@ class AddSecurityTestResult:
 @dataclass
 class SecurityScanAttributes:
     accepted_regulations: bool
+    accepted_marketing: bool
+    personal_data_processing: bool
     website: str
     email: str
     createdAt: str

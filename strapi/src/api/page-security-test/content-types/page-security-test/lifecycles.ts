@@ -91,6 +91,7 @@ export default {
     log(collection, HookState.afterCreateMany, JSON.stringify(result));
   },
   async beforeUpdate(event) {
+    const id = event.params.where.id;
     const data = event.params.data;
 
     if ("accepted_regulations" in data && !data.accepted_regulations) {
@@ -99,10 +100,7 @@ export default {
 
     const entry = await strapi.entityService.findOne(
       "api::page-security-test.page-security-test",
-      data.id,
-      {
-        populate: { tests_results: true },
-      }
+      id
     );
 
     if (entry.status == "finished" || entry.status == "failed") {
@@ -111,11 +109,7 @@ export default {
       );
     }
 
-    log(
-      collection,
-      HookState.beforeUpdate,
-      `Updated entry with id: ${event.params.data.id}`
-    );
+    log(collection, HookState.beforeUpdate, `Updated entry with id: ${id}`);
   },
   async afterUpdate(event) {
     const { result } = event;
