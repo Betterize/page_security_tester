@@ -7,6 +7,7 @@ import logo from "/src/assets/logo-white.svg";
 
 // COMPONENTS
 import ButtonContact from "@components/subcomponents/ButtonContact.astro";
+import NavbarLink from "./NavbarLink.astro";
 import NavbarMobilePanel from "./NavbarMobilePanel.astro";
 
 interface Props {
@@ -54,6 +55,21 @@ const { enableScrollFunction = "true" } = Astro.props;
         class=""
       />
     </a>
+
+    <div
+      aria-label="Site Nav"
+      class="hidden gap-8 text-sm font-medium text-md lg:flex"
+    >
+      <NavbarLink title="Projects" href="https://betterize.pl/projects/" />
+      <NavbarLink
+        title="Page Speed Test"
+        href="https://betterize.pl/page_speed_tester/"
+      />
+      <NavbarLink
+        title="Collaboration"
+        href="https://betterize.pl/step_by_step/"
+      />
+    </div>
 
     <div class="items-center hidden gap-4 lg:flex">
       <ButtonContact text="Contact us" />
