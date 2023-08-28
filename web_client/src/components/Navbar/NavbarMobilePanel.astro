@@ -1,0 +1,40 @@
+---
+import NavbarLinkMobile from "./NavbarLinkMobile.astro";
+---
+
+<div
+  id="mobile_menu"
+  class="absolute left-0 right-0 z-30 hidden transition duration-500 transform shadow-2xl shadow-black border-t-gray-500 bg-zinc-900 top-full"
+>
+  <div class="flex flex-col items-start gap-4 p-5 lg:hidden">
+    <ul class="flex flex-col items-start text-left">
+      <NavbarLinkMobile
+        href="https://betterize.pl"
+        title="Betterize"
+        menu_item_class="border-b border-gray-300 transition-smooth hover:text-sky-500 "
+      />
+
+      <NavbarLinkMobile
+        href="https://betterize.pl/contact"
+        title="Contact us"
+        menu_item_class="duration-200 transform hover:text-sky-500"
+        link_class="font-black"
+      />
+    </ul>
+  </div>
+</div>
+
+<script>
+  const menu_btn = document.getElementById("menu_btn");
+  const mobile_menu = document.getElementById("mobile_menu");
+  const menu_bars = document.getElementById("menu_bars");
+  const menu_close = document.getElementById("menu_close");
+  const navbar = document.getElementById("navbar");
+
+  menu_btn?.addEventListener("click", () => {
+    mobile_menu?.classList.toggle("hidden");
+    menu_bars?.classList.toggle("hidden");
+    menu_close?.classList.toggle("hidden");
+    navbar?.classList.toggle("bg-zinc-800");
+  });
+</script>

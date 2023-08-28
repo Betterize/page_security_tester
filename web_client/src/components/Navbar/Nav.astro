@@ -1,0 +1,145 @@
+---
+// GRAPHICS
+import menu_bars from "/src/assets/menu_bars.svg";
+import menu_close from "/src/assets/menu_close.svg";
+import logo_text from "/src/assets/logo-white-text.svg";
+import logo from "/src/assets/logo-white.svg";
+
+// COMPONENTS
+import ButtonContact from "@components/subcomponents/ButtonContact.astro";
+import NavbarMobilePanel from "./NavbarMobilePanel.astro";
+
+interface Props {
+  enableScrollFunction?: string;
+}
+
+const { enableScrollFunction = "true" } = Astro.props;
+---
+
+<div
+  class="absolute top-0 w-full mx-auto duration-300 transform z-100 transition-smooth"
+  id="navbar-container"
+  data-enable-scroll-function={enableScrollFunction}
+  aria-label="Site Header"
+  class="relative z-50 w-full transform transition-smooth"
+>
+  <nav
+    id="navbar"
+    class="relative flex items-center justify-between max-w-screen-xl gap-10 px-8 mx-auto h-14 lg:h-16"
+  >
+    <a
+      href={`https://betterize.pl/`}
+      class="transition-smooth flex transform hover:(opacity-80 rotate-5 scale-105)"
+    >
+      <img
+        id="logo_large"
+        src={logo_text}
+        width="70"
+        height="56"
+        loading="eager"
+        decoding="async"
+        alt="descriptive text"
+        fetchpriority="high"
+        class=""
+      />
+      <img
+        id="logo_small"
+        src={logo}
+        width="50"
+        height="40"
+        loading="eager"
+        decoding="async"
+        alt="descriptive text"
+        fetchpriority="high"
+        class=""
+      />
+    </a>
+
+    <div class="items-center hidden gap-4 lg:flex">
+      <ButtonContact text="Contact us" />
+    </div>
+
+    <!-- button mobile -->
+    <div id="menu_btn" class="w-10 lg:hidden">
+      <img
+        id="menu_bars"
+        class="bi bi-list"
+        width="36px"
+        height="36px"
+        src={menu_bars}
+        alt="open menu"
+      />
+      <img
+        id="menu_close"
+        class="hidden bi bi-list"
+        width="36px"
+        height="36px"
+        src={menu_close}
+        alt="close menu"
+      />
+      <NavbarMobilePanel />
+    </div>
+  </nav>
+</div>
+
+<style>
+  .nav-link[aria-current="page"] {
+    text-decoration: underline #fff 0.1rem;
+    text-underline-offset: 0.5rem;
+  }
+  a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  #navbar-container.active {
+    background-color: rgb(24 24 27);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  #logo_small {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    #logo_small {
+      display: block;
+    }
+    #logo_large {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    #logo_large {
+      display: block;
+    }
+  }
+
+  .navbar-first {
+    backdrop-filter: none;
+    background-color: transparent;
+    box-shadow: none;
+    position: absolute;
+  }
+  .navbar-after-scroll {
+    backdrop-filter: none;
+    background-color: #151317;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+    position: fixed;
+  }
+</style>
+
+<script>
+  const navbar = document.getElementById("navbar-container");
+  if (navbar?.getAttribute("data-enable-scroll-function") === "true") {
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 600) {
+        navbar?.classList.remove("navbar-first");
+        navbar?.classList.add("navbar-after-scroll");
+      } else {
+        navbar?.classList.add("navbar-first");
+        navbar?.classList.remove("navbar-after-scroll");
+      }
+    });
+  }
+</script>

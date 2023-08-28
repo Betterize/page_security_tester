@@ -1,0 +1,14 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<a
+  class="bg-gradient-to-r flex items-center justify-center rounded-md font-bold whitespace-nowrap from-sky-600 to-indigo-600 text-md py-4 px-8 w-full sm:w-40 transition-smooth ease-in-out hover:(transition-smooth transform scale-105 text-gray-900 shadow-lg shadow-blue-600/40)"
+  href={`https://betterize.pl/contact`}
+>
+  {text}
+</a>

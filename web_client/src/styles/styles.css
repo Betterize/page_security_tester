@@ -1,0 +1,249 @@
+:root {
+    cursor: default;
+    line-height: 28px;
+    text-align: center;
+
+    color-scheme: dark;
+    background-color: #151317;
+    margin: auto;
+
+    --bg-color: rgb(20, 20, 20);
+    --card-color: rgba(23, 23, 23, 0.8);
+    --card-color2: rgba(23, 23, 23);
+
+    font-family: "Roboto", "Raleway";
+    font-size: 100%;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    --swiper-pagination-bullet-inactive-color: #a0a1dd;
+    --swiper-pagination-bullet-inactive-opacity: 1;
+    --swiper-pagination-bullet-size: 12px;
+    --swiper-pagination-bullet-width: 12px;
+    --swiper-pagination-bullet-height: 12px;
+}
+
+html {
+    background-color: #151317;
+}
+
+body {
+    background-color: #151317;
+}
+summary::-webkit-details-marker {
+    display: none;
+    margin-inline-end: 0;
+}
+
+/* Box sizing */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+input,
+button,
+textarea,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+button,
+a,
+img,
+video,
+form {
+    z-index: 10;
+}
+
+img,
+video,
+iframe {
+    max-inline-size: 100%;
+    block-size: auto;
+}
+
+body {
+    margin: 0 auto;
+    min-width: 360px;
+    min-height: 100vh;
+}
+
+#home {
+    margin: 0 auto;
+    height: auto;
+    max-width: 1280px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Remove margin, padding and border */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+img,
+form,
+fieldset,
+legend,
+input,
+button,
+textarea,
+select {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.bg-grid {
+    background-size: 20px 20px;
+    background-image: linear-gradient(to right, #7dd3fc10 1px, transparent 1px),
+        linear-gradient(to bottom, #7dd3fc10 1px, transparent 1px);
+    background-position: top center;
+    image-rendering: pixelated;
+}
+
+.blur-radial {
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.1)
+    );
+    backdrop-filter: blur(50px);
+}
+
+@media (min-width: 1280px) {
+    .noise2 {
+        background-color: #1b1a1a80;
+        background-image: url("/src/assets/noise.webp");
+        background-blend-mode: overlay;
+        opacity: 0.2;
+        pointer-events: none;
+    }
+}
+.bg-blur {
+    filter: blur(50px);
+}
+.bg-blur2 {
+    filter: blur(20px);
+}
+.bg-blur3 {
+    filter: blur(5px);
+}
+
+.naviczek {
+    backdrop-filter: brightness(0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    -webkit-backdrop-brightness: brightness(0.5);
+    --tw-backdrop-blur: blur(20px);
+    --tw-backdrop-brightness: brightness(0.5);
+}
+
+.show-on-scroll {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(100%);
+    transition: all 1s;
+}
+.show-on-scroll-alt {
+    opacity: 0;
+    filter: blur(5px);
+    transition: all 1s;
+}
+.show-on-scroll-alt2 {
+    opacity: 0;
+    filter: blur(5px);
+    transition: all 2s;
+}
+
+@media (prefers-reduced-motion) {
+    .show-on-scroll {
+        transition: none;
+    }
+    .show-on-scroll-alt {
+        transition: none;
+    }
+}
+
+.pokaz {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+}
+
+@media (min-width: 1280px) {
+    .element:nth-child(2) {
+        transition-delay: 250ms;
+    }
+    .element:nth-child(3) {
+        transition-delay: 500ms;
+    }
+    .element:nth-child(4) {
+        transition-delay: 750ms;
+    }
+    .element:nth-child(5) {
+        transition-delay: 1000ms;
+    }
+    .element:nth-child(6) {
+        transition-delay: 1250ms;
+    }
+}
+
+a.anchor {
+    text-decoration: underline;
+    color: #0026ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hover styles */
+a.anchor:hover {
+    color: #2990ff;
+}
+
+/* Active link styles */
+a.anchor:active {
+    color: #343a40;
+}
+
+.nav-bar-menu-item.active {
+    border-bottom-width: 2px;
+    border-color: #1172c4;
+    border-style: solid;
+}

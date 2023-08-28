@@ -1,0 +1,18 @@
+---
+// Title must be a path to element in i18 json for example navBar.colaboration
+interface Props {
+  title?: string;
+  href?: string;
+  id?: string;
+}
+
+const { title = "DefaultName", href = "/", id = "" } = Astro.props;
+---
+
+<a
+  class="flex items-center h-20 font-bold text-gray-300 ease-in-out nav-link transition-smooth hover:opacity-50"
+  id={id}
+  href={href}
+>
+  {title}
+</a>

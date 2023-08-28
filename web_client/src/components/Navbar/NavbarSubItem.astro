@@ -1,0 +1,35 @@
+---
+//@ts-ignore
+import { Img } from "astro-imagetools/components";
+
+interface Props {
+    title?: string;
+    src?: string;
+    href?: string;
+}
+
+const {
+    title = "I am a title of this component",
+    src = "/src/assets/swiperight.jpg",
+    href = "/projects/swiperight",
+} = Astro.props;
+---
+
+<li>
+    <a
+        href={href}
+        class="block font-black text-gray-100 transition duration-300 ease-in-out rounded-lg hover:transform hover:scale-105 hover:text-gray-400"
+    >
+        <div class="object-cover w-full h-20 mb-2 overflow-hidden rounded-lg">
+            <Img
+                src={src}
+                width={160}
+                layout="cover"
+                objectFit="cover"
+                alt="descriptive text"
+            />
+        </div>
+
+        <p class="font-medium max-w-[160px]">{title}</p>
+    </a>
+</li>

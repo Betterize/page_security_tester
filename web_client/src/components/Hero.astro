@@ -1,0 +1,74 @@
+---
+// @ts-ignore
+import { Picture } from "astro-imagetools/components";
+import PrimaryButton from "./subcomponents/PrimaryButton.astro";
+import SecondaryButton from "./subcomponents/SecondaryButton.astro";
+---
+
+<section class="pt-20 pb-40 lg:pt-0">
+  <div
+    class="backdrop-filter backdrop-blur-10 absolute w-full transform -translate-y-10 h-136 sm:(h-96) lg:(h-120 -translate-y-16) bg-gradient-to-br from-gray-900/70 via-gray-800/70 to-purple-900/40 -skew-y-4 shadow-2xl shadow-black"
+  >
+  </div>
+  <div class="grid grid-cols-1 mb-10 lg:(mt-16 grid-cols-2) main-content">
+    <div class="flex flex-col gap-6 text-center lg:text-left">
+      <h1 class="mb-0 header-1">
+        take care of your buisness
+        <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500 header-1"
+        >
+          security
+        </span>
+      </h1>
+      <h2 class="mx-auto font-normal lg:mx-0 header-3">
+        Check your website's security with our free scanner. Your online
+        protection at your fingertips!
+      </h2>
+      <div
+        class="flex-col flex justify-center gap-2 lg:(justify-start ) sm:flex-row"
+      >
+        <PrimaryButton ref="#SecurityScan" title="Go to scan" />
+        <SecondaryButton ref="https://betterize.pl" title="About us" />
+      </div>
+    </div>
+    <div
+      class="hidden lg:(overflow-hidden rounded-lg shadow-2xl justify-center items-center flex)"
+    >
+      <Picture
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        width={600}
+        breakpoints={[600]}
+        loading="eager"
+        alt="descriptive text"
+        artDirectives={[
+          {
+            src: "/src/assets/moon.png",
+            media: "(min-width: 1024px)",
+          },
+        ]}
+        attributes={{
+          style: {
+            display: "none",
+          },
+        }}
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .shadow-custom {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+      rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+      rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  }
+  .shadow-custom2 {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+      rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  }
+  .shadow-custom3 {
+    box-shadow: rgba(46, 114, 240, 0.4) 5px 5px,
+      rgba(46, 114, 240, 0.3) 10px 10px, rgba(46, 114, 240, 0.2) 15px 15px,
+      rgba(46, 114, 240, 0.1) 20px 20px, rgba(46, 114, 240, 0.05) 25px 25px;
+  }
+</style>

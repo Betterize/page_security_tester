@@ -1,0 +1,14 @@
+---
+interface Props {
+  ref: string;
+  title: string;
+}
+const { ref, title } = Astro.props;
+---
+
+<a
+  class="rounded-md bg-transparent border-2 whitespace-nowrap border-gray-100 font-bold text-md py-3 px-6 transition-smooth ease-in-out hover:(transition-smooth bg-gray-100 text-black transform scale-105 )"
+  href={ref}
+>
+  {title}
+</a>

@@ -1,0 +1,152 @@
+<div class="w-full mx-auto max-w-196">
+  <form id="contactForm" class="space-y-4" data-redirection="/thank_you">
+    <div data-error="W to pole można wpisać maksymalnie 50 znaków.">
+      <label for="name" class="block pl-2 font-medium text-left text-gray-300"
+        >Your website address</label
+      >
+      <input
+        class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800"
+        placeholder="https://betterize.pl"
+        type="text"
+        id="name"
+        name="name"
+        aria-label="Your website url"
+        maxlength="50"
+        autocomplete="off"
+        data-error-required="msg"
+        oninput="this.setCustomValidity('')"
+                oninvalid="setErrorMessage(this)"
+      />
+    </div>
+
+    <div>
+      <label for="email" class="block pl-2 font-medium text-left text-gray-100"
+        >Your email</label
+      >
+      <input
+        class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800"
+        placeholder="kontakt@betterize.pl"
+        type="email"
+        id="email"
+        name="email"
+        aria-label="Your email"
+        maxlength="255"
+        required
+        autocomplete="off"
+        data-error-required="msg"
+        data-error-invalid="msg"
+        oninput="this.setCustomValidity('')"
+                oninvalid="setErrorMessage(this)"
+      />
+    </div>
+
+    <div>
+      <div class="flex gap-2 p-1">
+        <input
+          type="checkbox"
+          id="regulations"
+          name="regulations"
+          class="my-auto"
+        />
+        <label for="regulations">Accept scanner regulations</label>
+      </div>
+      <div class="flex gap-2 p-1">
+        <input type="checkbox" id="rodo" name="rodo" class="my-auto" />
+        <label for="rodo">Accept RODO</label>
+      </div>
+      <div class="flex gap-2 p-1">
+        <input
+          type="checkbox"
+          id="marketing"
+          name="marketing"
+          class="my-auto"
+        />
+        <label for="marketing">Accept marketing</label>
+      </div>
+    </div>
+
+    <button
+      id="contactButton"
+      type="submit"
+      class="rounded-lg w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-16 transition-smooth hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
+    >
+      Scan
+    </button>
+
+    <!-- TODO dodaj stylowanie -->
+    <div class="" id="responseInfo"></div>
+  </form>
+</div>
+
+<script is:inline>
+function setErrorMessage(input) {
+  if (input.validity.valueMissing) {
+    input.setCustomValidity(input.getAttribute("data-error-required"));
+  } else if (input.validity.typeMismatch) {
+    input.setCustomValidity(input.getAttribute("data-error-invalid"));
+  } else {
+    input.setCustomValidity("");
+  }
+}
+</script>
+
+<style>
+  /* Twoje istniejące style CSS */
+
+  #responseInfo {
+    font-weight: bold;
+    color: red;
+    font-size: 34px;
+    padding: 8px;
+  }
+  .error-message {
+    display: none;
+    font-weight: bold;
+    color: red;
+    font-size: 14px;
+    padding: 8px;
+    margin-top: 4px;
+  }
+
+  .error-message.visible {
+    display: block;
+  }
+
+  div[data-error] .input {
+    border-color: red;
+    background-color: #fffafa;
+  }
+</style>
+
+<script>
+  import { sendContactRequest } from "src/typescript/securityScanForm";
+
+  async function onSubmit(event: SubmitEvent) {
+    let thisForm = event.target as HTMLFormElement;
+    const redirection = thisForm?.dataset.redirection;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const onSuccess = () => {
+      // Przekierowanie na inną stronę, np. /thank_you
+      window.location.assign(redirection);
+    };
+
+    const onError = (error) => {
+      const responseInfo = document.getElementById("responseInfo");
+
+      responseInfo.innerHTML = error;
+    };
+
+    const form = event.target as HTMLFormElement; // Get the form that was submitted
+    await sendContactRequest(form, onSuccess, onError);
+  }
+
+  const form = document.getElementById("contactForm") as HTMLFormElement;
+  if (form) {
+    form.addEventListener("submit", onSubmit);
+  } else {
+    console.error("BUG: element with id=contactForm not found !!!");
+  }
+</script>

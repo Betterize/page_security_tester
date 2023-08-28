@@ -1,39 +1,97 @@
---- 
+---
+import "../styles/styles.css";
+// @ts-ignore
+import { ImageSupportDetection } from "astro-imagetools/components";
+
 interface Props {
-	title: string;
+  title?: string;
+  description?: string;
+  keywords?: string;
+  metaRobots?: string;
 }
 
-const { title } = Astro.props;
+const {
+  title = "",
+  description = "",
+  keywords = "",
+  metaRobots = "",
+} = Astro.props as Props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description">
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html class="scroll-smooth" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!--  to musi zawsze być na 1 miejscu w headzie! -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <ImageSupportDetection />
+
+    <link
+      rel="preload"
+      href="/assets/fonts/Roboto_normal_400.KFOmCnqEu92Fr1Mu7GxKOzY.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link
+      rel="preload"
+      href="/assets/fonts/Roboto_normal_400.KFOmCnqEu92Fr1Mu4mxK.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link
+      rel="preload"
+      href="/assets/fonts/Roboto_normal_700.KFOlCnqEu92Fr1MmWUlfChc4EsA.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link
+      rel="preload"
+      href="/assets/fonts/Roboto_normal_700.KFOlCnqEu92Fr1MmWUlfBBc4.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link
+      rel="preload"
+      href="/assets/fonts/Roboto_normal_900.KFOlCnqEu92Fr1MmYUtfChc4EsA.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link
+      rel="preload"
+      href="/assets/fonts/Roboto_normal_900.KFOlCnqEu92Fr1MmYUtfBBc4.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link href="/assets/styles/fonts.css" rel="stylesheet" />
+
+    <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0"
+    />
+
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content={metaRobots} />
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151A;
-		background-size: 224px;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
-</style>

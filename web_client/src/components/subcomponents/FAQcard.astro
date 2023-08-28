@@ -1,0 +1,40 @@
+---
+interface Props {
+    question?: string;
+    answer?: string;
+}
+const {
+    question = "Jestem pytaniem, które ktoś mógłby zadać",
+    answer = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis molestias culpa in, recusandae laboriosam neque aliquid libero nesciunt voluptate dicta quo officiis explicabo consequuntur distinctio corporis earum similique! ",
+} = Astro.props;
+---
+
+<details
+    class="max-w-196 mx-auto w-full group [&_summary::-webkit-details-marker]:hidden"
+>
+    <summary
+        class="flex items-center justify-between w-full p-4 border rounded-lg cursor-pointer bg-black/70 lg:w-196 backdrop-filter backdrop-blur-20 border-gray-200/50"
+    >
+        <h2 class="font-medium text-gray-200">
+            {question}
+        </h2>
+
+        <svg
+            class="flex-shrink-0 h-5 ml-1.5 transform transition w-5 rotate-0 duration-300"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"></path>
+        </svg>
+    </summary>
+
+    <p class="w-full px-4 mt-4 text-left text-gray-300 lg:w-196">
+        {answer}
+    </p>
+</details>

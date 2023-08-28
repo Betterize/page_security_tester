@@ -1,0 +1,13 @@
+# Ignore artifacts:
+dist
+build
+coverage
+.cache
+.vscode
+.temp*
+
+package.json
+package-lock.json
+
+# Ignore all HTML files:
+*.html
