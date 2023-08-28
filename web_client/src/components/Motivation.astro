@@ -1,0 +1,45 @@
+---
+import TwoColumns from "./subcomponents/TwoColumns.astro";
+
+const motivations = [
+  {
+    title: "Protection Against Downtime",
+    description:
+      "Website security is crucial for minimizing business interruptions. Cyberattacks such as DDoS, XSS and SQL Injection or other attempts to breach security can lead to website downtime or even disrupt the entire IT infrastructure of the company. This can result in revenue loss, erosion of customer trust, and a negative impact on the company's image.",
+    src: "/src/assets/motivations/application.svg",
+    image_left: true,
+  },
+  {
+    title: "Cleanup Costs Far More",
+    description:
+      "A cyberattack's aftermath is both time-consuming and costly. Many firms undervalue the importance of initial security investments. They overlook the extensive post-breach costs, which include technical recovery, legal penalties, operational halts, and damage to reputation. Proactive security investments can shield companies from these unexpected expenses.",
+    src: "/src/assets/motivations/hourglass.svg",
+    image_left: false,
+  },
+  {
+    title: "Brand consistency and impression of high value",
+    description:
+      "Website security is closely tied to the impression of brand quality. The website often serves as the first point of contact between customers and the company. An unsecured website creates an image of an unprofessional and technological outdated company. On the other hand, a smoothly functioning and secure website builds an impression of reliability and trust among customers.",
+    src: "/src/assets/motivations/diamond.svg",
+    image_left: true,
+  },
+];
+---
+
+<section>
+  <h2 class="pb-16 mx-auto text-5xl font-bold uppercase">
+    Why you need secure website?
+  </h2>
+  <div class="grid gap-12 px-4 mx-auto lg:max-w-6xl">
+    {
+      motivations.map((motivation) => (
+        <TwoColumns
+          headline={motivation.title}
+          description={motivation.description}
+          image={motivation.src}
+          image_left={motivation.image_left}
+        />
+      ))
+    }
+  </div>
+</section>

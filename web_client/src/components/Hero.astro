@@ -7,13 +7,13 @@ import SecondaryButton from "./subcomponents/SecondaryButton.astro";
 
 <section class="pt-20 pb-40 lg:pt-0">
   <div
-    class="backdrop-filter backdrop-blur-10 absolute w-full transform -translate-y-10 h-136 sm:(h-96) lg:(h-120 -translate-y-16) bg-gradient-to-br from-gray-900/70 via-gray-800/70 to-purple-900/40 -skew-y-4 shadow-2xl shadow-black"
+    class="backdrop-filter backdrop-blur-10 absolute w-full transform -translate-y-10 h-136 sm:(h-96) lg:(h-120 -translate-y-4) bg-gradient-to-br from-gray-900/70 via-gray-800/70 to-purple-900/40 -skew-y-4 shadow-2xl shadow-black"
   >
   </div>
-  <div class="grid grid-cols-1 mb-10 lg:(mt-16 grid-cols-2) main-content">
-    <div class="flex flex-col gap-6 text-center lg:text-left">
+  <div class="grid grid-cols-1 mb-10 lg:(grid-cols-2) main-content px-4">
+    <div class="flex flex-col justify-center gap-6 text-center lg:text-left">
       <h1 class="mb-0 header-1">
-        take care of your buisness
+        take care of your business
         <span
           class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500 header-1"
         >
@@ -36,13 +36,13 @@ import SecondaryButton from "./subcomponents/SecondaryButton.astro";
     >
       <Picture
         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-        width={600}
-        breakpoints={[600]}
+        width={450}
+        breakpoints={[450]}
         loading="eager"
         alt="descriptive text"
         artDirectives={[
           {
-            src: "/src/assets/moon.png",
+            src: "/src/assets/security.png",
             media: "(min-width: 1024px)",
           },
         ]}

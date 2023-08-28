@@ -6,7 +6,10 @@ import Footer from "@components/Footer.astro";
 import { BackgroundImage } from "astro-imagetools/components";
 import SecurityScan from "@components/SecurityScan.astro";
 import Hero from "@components/Hero.astro";
-import FAQsection from "@components/subcomponents/FAQsection.astro";
+import FAQsection from "@components/FAQsection.astro";
+import StepByStep from "@components/StepByStep.astro";
+import SeoContent from "@components/SeoContent.astro";
+import Motivation from "@components/Motivation.astro";
 ---
 
 <Layout title="Security scanner" description="Lorem ipsum">
@@ -14,19 +17,11 @@ import FAQsection from "@components/subcomponents/FAQsection.astro";
 
   <main class="flex flex-col min-h-screen mx-auto lg:mt-40 gap-28 lg:gap-40">
     <Hero />
-
-    <p>Lorem ipsum</p>
-    <p>Coś o tym czemu jesteśmy super i czemu skanowanie jest ważne</p>
-
-    <h2>Full set of vulnerability scans, powered by open-source</h2>
-    <p>https://hostedscan.com/</p>
-
+    <Motivation />
+    <StepByStep />
     <SecurityScan />
-
-    <div class="flex flex-col gap-8 mx-auto">
-      <h2 class="text-4xl header-1">FAQ</h2>
-      <FAQsection />
-    </div>
+    <SeoContent />
+    <FAQsection />
   </main>
   <div class="mt-auto">
     <Footer />

@@ -1,0 +1,93 @@
+---
+// @ts-ignore
+import { Img } from "astro-imagetools/components";
+interface Props {
+  title: string;
+  paragraph: string;
+  src: string;
+  number: string;
+}
+const {
+  title = "Jestem pytaniem, które ktoś mógłby zadać",
+  paragraph = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis molestias culpa in, recusandae laboriosam neque aliquid libero nesciunt voluptate dicta quo officiis explicabo consequuntur distinctio corporis earum similique! ",
+  number = "01",
+  src,
+} = Astro.props;
+---
+
+<div
+  class="w-full mx-auto text-left border-2 rounded-lg border-sky-600/70 bg-gray-600/40"
+>
+  <div class="flex items-center justify-center p-4 bg-blue-900/60">
+    <div class="w-64 h-64">
+      <img src={src} alt="descriptive text" />
+    </div>
+  </div>
+  <div class="p-4">
+    <div class="">
+      <p class="text-xl font-light tracking-wide text-gray-500">
+        {number}
+      </p>
+      <h2 class="mb-2 text-2xl font-black">
+        {title}
+      </h2>
+      <p class="text-sm">
+        {paragraph}
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  #cards {
+    width: calc(100% - 20px);
+  }
+
+  #cards:hover > .card::after {
+    opacity: 1;
+  }
+  .card {
+    position: relative;
+  }
+
+  .card::before,
+  .card::after {
+    border-radius: inherit;
+    content: "";
+    height: 100%;
+    left: 0px;
+    opacity: 0;
+    position: absolute;
+    top: 0px;
+    transition: opacity 500ms;
+    width: 100%;
+  }
+
+  .card::before {
+    background: radial-gradient(
+      800px circle at var(--mouse-x) var(--mouse-y),
+      rgba(0, 132, 255, 0.1),
+      transparent 40%
+    );
+
+    z-index: 3;
+  }
+
+  .card::after {
+    background: radial-gradient(
+      600px circle at var(--mouse-x) var(--mouse-y),
+      rgba(0, 183, 255, 0.4),
+      transparent 40%
+    );
+    z-index: 1;
+  }
+
+  .card > .card-content {
+    background-color: var(--card-color2);
+    border-radius: inherit;
+
+    inset: 1px;
+    position: absolute;
+    z-index: 2;
+  }
+</style>
