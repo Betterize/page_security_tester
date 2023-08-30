@@ -5,7 +5,25 @@ import FAQcard from "./subcomponents/FAQcard.astro";
 <div class="flex flex-col gap-8 mx-auto">
   <h2 class="text-4xl header-1">FAQ</h2>
   <div class="grid w-full max-w-6xl grid-cols-1 gap-4 pb-20">
-    <FAQcard question={"Lorem ipsum"} answer={"Lorem ipsum"} />
-    <FAQcard question={"Lorem ipsum"} answer={"Lorem ipsum"} />
+    <FAQcard
+      question={"How this tool works?"}
+      answer={"Through active interactions with the application in real-time, this scanner identifies potential vulnerabilities and weaknesses by assessing its responses to various attack scenarios. This enables programmers and security teams to enhance the application's security by eliminating identified risks. "}
+    />
+    <FAQcard
+      question={"Can it affect my website?"}
+      answer={"A website security scanner is a tool designed to protect websites from threats. Its purpose is to uncover potential security weaknesses and let you fix them. However, it's important to note that under normal operating conditions, the scanner doesn't harm the website. Nevertheless, in the case of websites with very weak security, there is a risk that the scanner might unintentionally affect the website's functionality. Hence, this scanner should only be used on websites for which the user has proper authorization and knowledge."}
+    />
+    <FAQcard
+      question={"What vulnerabilities it detects?"}
+      answer={"This tool checks for vulnerabilities like: XSS, SSRF, bad configuration of SSL. It also checks your HTTP Headers, Cookie Flags and Content Security Policy. Furthermore, it assesses whether your server permits connections on unnecessary ports. At the end of scan, our tool checks if remote code execution is possible and how good you manage your files."}
+    />
+    <FAQcard
+      question={"Can I use this tool for free?"}
+      answer={"This tool is completely free to use. However, it's important to remember to only scan websites for which you have proper authorization."}
+    />
+    <FAQcard
+      question={"Is my website immune to attacks if the scanner showed nothing?"}
+      answer={"While a scanner not finding any vulnerabilities is a positive sign, it doesn't guarantee absolute immunity to attacks. Security is a complex and evolving field, and scanners might not catch every potential issue. It's crucial to perform regular security tests."}
+    />
   </div>
 </div>

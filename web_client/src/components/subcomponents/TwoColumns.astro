@@ -15,7 +15,11 @@ const { headline, description, image, image_left = true } = Astro.props;
       return (
         <div class="grid max-w-6xl grid-cols-1 gap-8 mx-auto lg:(grid-cols-2) rounded-xl">
           <div class="flex items-center justify-center p-4 bg-gradient-to-br from-sky-700/70 via-purple-700/50 to-blue-600/40 rounded-xl">
-            <img class="w-70 h-70" src={image} alt="descriptive text" />
+            <img
+              class="opacity-80 w-70 h-70"
+              src={image}
+              alt="descriptive text"
+            />
           </div>
 
           <div class="grid p-4 bg-zinc-700/40 rounded-xl">
@@ -36,7 +40,11 @@ const { headline, description, image, image_left = true } = Astro.props;
             <p class="text-gray-300">{description}</p>
           </div>
           <div class="flex items-center justify-center p-4 bg-gradient-to-br from-sky-700/70 via-purple-700/50 to-blue-600/40 rounded-xl">
-            <img class="w-70 h-70" src={image} alt="descriptive text" />
+            <img
+              class="opacity-80 w-70 h-70"
+              src={image}
+              alt="descriptive text"
+            />
           </div>
         </div>
       );
