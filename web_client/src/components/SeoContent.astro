@@ -1,1 +1,55 @@
-<p>seo content</p>
+---
+import SeoContentItem from "./subcomponents/SeoContentItem.astro";
+
+const motivations = [
+  {
+    title:
+      "Uncovering Improper Redirections and Enduring Cross-Site Scripting (XSS) Attacks",
+    description:
+      "Explore the capabilities of Redirect and Permanent XSS modules, which concentrate on pinpointing risks associated with faulty redirects and persistent Cross-Site Scripting (XSS). See how this tool scrutinizes redirect mechanisms and potential XSS susceptibilities, strengthening your website's defenses against manipulated redirections and the injection of malicious code.",
+  },
+  {
+    title:
+      "Wapiti: In-Depth Analysis of Security Modules including XSS, SSRF, SSL, and More",
+    description:
+      "Dive into the functionalities of the robust Wapiti tool that comprehensively assesses your website for potential security vulnerabilities. This includes detecting threats like Cross-Site Scripting (XSS), Server-Side Request Forgery (SSRF), and SSL-related issues. Gain insights into possible security weaknesses, allowing you to respond promptly and fortify your website against potential cyberattacks.",
+  },
+  {
+    title:
+      "Analyzing HTTP Headers, Cookie Flags, and CSP to Strengthen Security",
+    description:
+      "Wapiti modules like http_headers, cookieflags, and Content Security Policy (CSP) analysis allow you to assess and enhance your website's security. By analyzing HTTP headers, cookie flags, and CSP rules, you can identify and rectify potential vulnerabilities that could compromise your site's security",
+  },
+  {
+    title:
+      "Advanced Port Scanning and Service Identification for Enhanced Security",
+    description:
+      "The nmap tool offers advanced port scanning and service identification capabilities for your infrastructure. Discover how to tailor nmap's configuration to effectively and safely scan your ports. This knowledge will help you understand the available services on your servers and potential vulnerabilities, crucial for maintaining both security and accessibility.",
+  },
+  {
+    title:
+      "Wapiti and Nmap: Collaborating Tools for Ensuring Your Website's Security",
+    description:
+      "The combination of Wapiti and nmap creates a powerful duo for analyzing and fortifying your website's security. While Wapiti detects various security gaps, nmap identifies available services and potential vulnerabilities. These tools work in tandem to provide insights into your site's security status and offer information necessary for effective vulnerability mitigation.",
+  },
+  {
+    title: "Service Version Detection",
+    description:
+      "Nmap is not just a port scanner; it's a potent tool for identifying software versions running on your servers. Nmap analyzes server responses and extracts software version information. This enables you to monitor and update software versions, ensuring you're using the latest and most secure releases.",
+  },
+];
+---
+
+<section>
+  <h2 class="pb-16 mx-auto text-5xl font-bold uppercase">More about scanner</h2>
+  <div class="grid gap-10 px-4 mx-auto lg:(max-w-5xl grid-cols-2)">
+    {
+      motivations.map((motivation) => (
+        <SeoContentItem
+          headline={motivation.title}
+          description={motivation.description}
+        />
+      ))
+    }
+  </div>
+</section>
