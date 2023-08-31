@@ -8,12 +8,10 @@ const { headline, description } = Astro.props;
 ---
 
 <div
-  class="grid gap-4 p-4 mx-auto border border-2 border-gray-600 max-w-120 bg-gradient-to-br from-zinc-700/50 via-gray-700/20 to-zinc-800/40 rounded-xl"
+  class="grid gap-4 p-4 mx-auto border border-2 border-gray-600 max-w-120 bg-gray-600/40 rounded-xl"
 >
-  <h2
-    class="flex items-center justify-center h-full text-2xl font-bold capitalize"
-  >
+  <h2 class="flex justify-center h-12 text-2xl font-bold capitalize">
     {headline}
   </h2>
-  <p class="text-gray-300">{description}</p>
+  <p class="h-full text-gray-300 min-h-30">{description}</p>
 </div>

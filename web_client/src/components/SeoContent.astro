@@ -3,39 +3,54 @@ import SeoContentItem from "./subcomponents/SeoContentItem.astro";
 
 const motivations = [
   {
-    title:
-      "Uncovering Improper Redirections and Enduring Cross-Site Scripting (XSS) Attacks",
+    title: "Tools we use",
     description:
-      "Explore the capabilities of Redirect and Permanent XSS modules, which concentrate on pinpointing risks associated with faulty redirects and persistent Cross-Site Scripting (XSS). See how this tool scrutinizes redirect mechanisms and potential XSS susceptibilities, strengthening your website's defenses against manipulated redirections and the injection of malicious code.",
+      "At this moment, our scanner is based on nmap and wapiti3, but we are constantly improving to give you best quality experience with secure, fast and easy to manage websites.",
   },
   {
-    title:
-      "Wapiti: In-Depth Analysis of Security Modules including XSS, SSRF, SSL, and More",
+    title: "Redirects",
     description:
-      "Dive into the functionalities of the robust Wapiti tool that comprehensively assesses your website for potential security vulnerabilities. This includes detecting threats like Cross-Site Scripting (XSS), Server-Side Request Forgery (SSRF), and SSL-related issues. Gain insights into possible security weaknesses, allowing you to respond promptly and fortify your website against potential cyberattacks.",
+      "Redirects are a common target of open redirect attacks. Our tool analyzes any redirects on your site, making sure there are no vulnerabilities that could lead users to dangerous sites.",
   },
   {
-    title:
-      "Analyzing HTTP Headers, Cookie Flags, and CSP to Strengthen Security",
+    title: "Cross-Site Scripting",
     description:
-      "Wapiti modules like http_headers, cookieflags, and Content Security Policy (CSP) analysis allow you to assess and enhance your website's security. By analyzing HTTP headers, cookie flags, and CSP rules, you can identify and rectify potential vulnerabilities that could compromise your site's security",
+      "The XSS module screens your site for potential vulnerabilities related to malicious code injection. This prevents attackers from using your site to redirect users to infected sites or steal sensitive data.",
   },
   {
-    title:
-      "Advanced Port Scanning and Service Identification for Enhanced Security",
+    title: "SSL",
     description:
-      "The nmap tool offers advanced port scanning and service identification capabilities for your infrastructure. Discover how to tailor nmap's configuration to effectively and safely scan your ports. This knowledge will help you understand the available services on your servers and potential vulnerabilities, crucial for maintaining both security and accessibility.",
+      "Correct SSL certificates are the key to secure communication between your site and your users. Our SSL module thoroughly checks certificates, making sure your customers are protected from possible Man-in-the-Middle attacks.",
   },
   {
-    title:
-      "Wapiti and Nmap: Collaborating Tools for Ensuring Your Website's Security",
+    title: "HTTP Headers",
     description:
-      "The combination of Wapiti and nmap creates a powerful duo for analyzing and fortifying your website's security. While Wapiti detects various security gaps, nmap identifies available services and potential vulnerabilities. These tools work in tandem to provide insights into your site's security status and offer information necessary for effective vulnerability mitigation.",
+      "HTTP headers are a key part of your site's security. Our tool checks these headers, verifying that they are configured correctly, minimizing the risk of attacks.",
+  },
+  {
+    title: "Cookie Flags",
+    description:
+      "Improperly secured cookies can lead to serious threats. We analyze cookie flags to protect users from possible attacks on session data.",
   },
   {
     title: "Service Version Detection",
     description:
-      "Nmap is not just a port scanner; it's a potent tool for identifying software versions running on your servers. Nmap analyzes server responses and extracts software version information. This enables you to monitor and update software versions, ensuring you're using the latest and most secure releases.",
+      "Nmap analyzes server responses and extracts software version information. This enables you to monitor and update software versions, ensuring you're using the latest and most secure releases.",
+  },
+  {
+    title: "CSP",
+    description:
+      "CSP is an additional layer of security that helps  detect and mitigate certain types of attacks, such as XSS and data injection attacks. These attacks are used for everything from data theft to website defacement to malware distribution.",
+  },
+  {
+    title: "SSRF",
+    description:
+      "A server-side request forgery is a web  vulnerability that allows an attacker to trick a server-side application into sending a request to an unintended location.",
+  },
+  {
+    title: "Executable Files",
+    description:
+      "Some executable files can pose a potential risk to your site. Therefore, we check any such files, eliminating the risks associated with their use.",
   },
 ];
 ---
