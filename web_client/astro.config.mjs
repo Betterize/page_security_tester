@@ -8,7 +8,7 @@ import compressor from "astro-compressor";
 
 export default defineConfig({
     output: "static",
-    site: "https://betterize.pl",
+    site: "https://security-scan.betterize.pl",
     integrations: [
         astroImageTools,
         windicss(),
@@ -20,10 +20,6 @@ export default defineConfig({
         }),
         sitemap({
             filter: (page) =>
-                page !== "https://security-scan.betterize.pl/test/" &&
-                page !== "https://security-scan.betterize.pl/thank_you/" &&
-                page !==
-                    "https://security-scan.betterize.pl/pl/dziękujemy_za_kontakt/" &&
                 page !== "https://security-scan.betterize.pl/~partytown/",
         }),
         compressor({

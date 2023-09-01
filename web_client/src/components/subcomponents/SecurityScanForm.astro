@@ -5,7 +5,7 @@ import ScanCreateError from "@components/modals/ScanCreateError.astro";
 ---
 
 <div class="w-full mx-auto max-w-196">
-  <form id="scanForm" class="space-y-4" data-redirection="/thank_you">
+  <form id="scanForm" class="space-y-4">
     <div data-error="W to pole można wpisać maksymalnie 50 znaków.">
       <label
         for="website"
@@ -86,14 +86,24 @@ import ScanCreateError from "@components/modals/ScanCreateError.astro";
       </div>
     </div>
 
-    <button
-      id="submit-button"
-      type="submit"
-      class="rounded-lg disabled:bg-blue-600/30 w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-16 transition-smooth enabled:hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
-      disabled
+    <div
+      class="flex-col flex justify-center gap-2 lg:(justify-start ) sm:flex-row"
     >
-      Scan
-    </button>
+      <button
+        id="submit-button"
+        type="submit"
+        class="rounded-lg disabled:bg-blue-600/30 w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-16 transition-smooth enabled:hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
+        disabled
+      >
+        Scan
+      </button>
+      <div
+        id="show-verify-code-modal"
+        class="rounded-lg disabled:bg-blue-600/30 w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-8 transition-smooth hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
+      >
+        Verify Code
+      </div>
+    </div>
   </form>
   <ConfirmScan />
   <ScanConfirmationResult />
@@ -130,29 +140,48 @@ function setErrorMessage(input) {
 <script>
   import { sendContactRequest } from "src/typescript/securityScanForm";
 
+  const validation_code_modal = document.getElementById(
+    "validationCodeModal"
+  ) as HTMLModElement;
+  const scan_create_modal = document.getElementById(
+    "scanCreateErrorModal"
+  ) as HTMLModElement;
+
+  // -------------------------------------------
+
+  const showVerifyCodeModalButton = document.getElementById(
+    "show-verify-code-modal"
+  ) as HTMLDivElement;
+
+  showVerifyCodeModalButton.addEventListener("click", () => {
+    validation_code_modal.classList.remove("hidden");
+  });
+
+  // -------------------------------------------
+
   async function onSubmit(event: SubmitEvent) {
     let thisForm = event.target as HTMLFormElement;
-    const redirection = thisForm?.dataset.redirection;
 
     event.preventDefault();
     event.stopPropagation();
 
     const onSuccess = () => {
-      if (redirection) {
-        window.location.assign(redirection);
-      }
+      validation_code_modal.classList.remove("hidden");
     };
 
     const onError = (error: string) => {
-      const responseInfo = document.getElementById("responseInfo");
+      scan_create_modal.classList.remove("hidden");
+      // const responseInfo = document.getElementById("responseInfo");
 
-      if (responseInfo) {
-        responseInfo.innerHTML = error;
-      }
+      // if (responseInfo) {
+      //   responseInfo.innerHTML = error;
+      // }
     };
 
     const form = event.target as HTMLFormElement; // Get the form that was submitted
-    window.location.assign(redirection);
+
+    //onSuccess();
+    onError("xd");
   }
 
   const form = document.getElementById("scanForm") as HTMLFormElement;
@@ -162,6 +191,7 @@ function setErrorMessage(input) {
     console.error("BUG: element with id=scanForm not found !!!");
   }
 
+  // below code is logic behind reqired checkboxes
   document.addEventListener("DOMContentLoaded", function () {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     const button = document.getElementById(

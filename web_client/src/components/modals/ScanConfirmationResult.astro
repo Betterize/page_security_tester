@@ -1,24 +1,24 @@
 <button
   class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700"
-  id="resultModalButton"
+  id="scanVerificationModalButton"
 >
   CR
 </button>
 
 <div
   class="fixed inset-0 z-50 flex items-center justify-center hidden px-4"
-  id="resultModal"
+  id="scanVerificationModal"
 >
   <!-- Overlay -->
-  <div class="fixed inset-0 bg-black opacity-50" id="modalBackground"></div>
+  <div class="fixed inset-0 bg-black opacity-50" id="scanVerificationBackground"></div>
 
   <div
     class="z-50 mx-auto overflow-y-auto bg-blue-900 border shadow-lg w-100 rounded-xl modal-container md:max-w-md"
   >
     <div class="flex flex-col gap-4 p-4 text-left">
-      <h3 class="text-2xl font-bold uppercase">verification result</h3>
+      <h3 class="text-2xl font-bold uppercase">verification succeded</h3>
       <p class="max-w-lg mb-2">
-        Fill below form with data we send you in email
+        Scan request successfully verified. The result will be sent to the email address you provided. We process a lot of inquiries so it may take some time.
       </p>
     </div>
   </div>
@@ -26,10 +26,10 @@
 
 <script>
   const openModalButton = document.getElementById(
-    "resultModalButton"
+    "scanVerificationModalButton"
   ) as HTMLButtonElement;
-  const modal = document.getElementById("resultModal") as HTMLModElement;
-  const modalBackground = document.getElementById("modalBackground");
+  const modal = document.getElementById("scanVerificationModal") as HTMLModElement;
+  const modalBackground = document.getElementById("scanVerificationBackground");
 
   openModalButton.addEventListener("click", () => {
     modal.classList.remove("hidden");
