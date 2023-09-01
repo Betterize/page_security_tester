@@ -1,15 +1,23 @@
+---
+import ConfirmScan from "@components/modals/ConfirmScan.astro";
+import ScanConfirmationResult from "@components/modals/ScanConfirmationResult.astro";
+import ScanCreateError from "@components/modals/ScanCreateError.astro";
+---
+
 <div class="w-full mx-auto max-w-196">
-  <form id="contactForm" class="space-y-4" data-redirection="/thank_you">
+  <form id="scanForm" class="space-y-4" data-redirection="/thank_you">
     <div data-error="W to pole można wpisać maksymalnie 50 znaków.">
-      <label for="name" class="block pl-2 font-medium text-left text-gray-300"
+      <label
+        for="website"
+        class="block pl-2 font-medium text-left text-gray-300"
         >Your website address</label
       >
       <input
         class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800"
         placeholder="https://betterize.pl"
-        type="text"
-        id="name"
-        name="name"
+        type="url"
+        id="website"
+        name="website"
         aria-label="Your website url"
         maxlength="50"
         autocomplete="off"
@@ -19,22 +27,20 @@
       />
     </div>
 
-    <div>
-      <label for="email" class="block pl-2 font-medium text-left text-gray-100"
+    <div data-error="W to pole można wpisać maksymalnie 50 znaków.">
+      <label for="email" class="block pl-2 font-medium text-left text-gray-300"
         >Your email</label
       >
       <input
         class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800"
-        placeholder="kontakt@betterize.pl"
+        placeholder="contact@example.com"
         type="email"
         id="email"
         name="email"
         aria-label="Your email"
-        maxlength="255"
-        required
+        maxlength="50"
         autocomplete="off"
         data-error-required="msg"
-        data-error-invalid="msg"
         oninput="this.setCustomValidity('')"
                 oninvalid="setErrorMessage(this)"
       />
@@ -48,11 +54,21 @@
           name="regulations"
           class="my-auto"
         />
-        <label for="regulations">Accept scanner regulations</label>
+        <label for="regulations"
+          ><a
+            class="underline text-violet-400 underline-offset-2 hover:opacity-50"
+            href="/regulations/marketing">Accept tool regulations</a
+          ></label
+        >
       </div>
       <div class="flex gap-2 p-1">
         <input type="checkbox" id="rodo" name="rodo" class="my-auto" />
-        <label for="rodo">Accept RODO</label>
+        <label for="rodo"
+          ><a
+            class="underline text-violet-400 underline-offset-2 hover:opacity-50"
+            href="/regulations/marketing">Accept RODO regulations</a
+          ></label
+        >
       </div>
       <div class="flex gap-2 p-1">
         <input
@@ -61,21 +77,27 @@
           name="marketing"
           class="my-auto"
         />
-        <label for="marketing">Accept marketing</label>
+        <label for="marketing"
+          ><a
+            class="underline text-violet-400 underline-offset-2 hover:opacity-50"
+            href="/regulations/marketing">Accept marketing regulations</a
+          ></label
+        >
       </div>
     </div>
 
     <button
-      id="contactButton"
+      id="submit-button"
       type="submit"
-      class="rounded-lg w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-16 transition-smooth hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
+      class="rounded-lg disabled:bg-blue-600/30 w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-16 transition-smooth enabled:hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
+      disabled
     >
       Scan
     </button>
-
-    <!-- TODO dodaj stylowanie -->
-    <div class="" id="responseInfo"></div>
   </form>
+  <ConfirmScan />
+  <ScanConfirmationResult />
+  <ScanCreateError />
 </div>
 
 <script is:inline>
@@ -99,19 +121,6 @@ function setErrorMessage(input) {
     font-size: 34px;
     padding: 8px;
   }
-  .error-message {
-    display: none;
-    font-weight: bold;
-    color: red;
-    font-size: 14px;
-    padding: 8px;
-    margin-top: 4px;
-  }
-
-  .error-message.visible {
-    display: block;
-  }
-
   div[data-error] .input {
     border-color: red;
     background-color: #fffafa;
@@ -129,24 +138,50 @@ function setErrorMessage(input) {
     event.stopPropagation();
 
     const onSuccess = () => {
-      // Przekierowanie na inną stronę, np. /thank_you
-      window.location.assign(redirection);
+      if (redirection) {
+        window.location.assign(redirection);
+      }
     };
 
-    const onError = (error) => {
+    const onError = (error: string) => {
       const responseInfo = document.getElementById("responseInfo");
 
-      responseInfo.innerHTML = error;
+      if (responseInfo) {
+        responseInfo.innerHTML = error;
+      }
     };
 
     const form = event.target as HTMLFormElement; // Get the form that was submitted
-    await sendContactRequest(form, onSuccess, onError);
+    window.location.assign(redirection);
   }
 
-  const form = document.getElementById("contactForm") as HTMLFormElement;
+  const form = document.getElementById("scanForm") as HTMLFormElement;
   if (form) {
     form.addEventListener("submit", onSubmit);
   } else {
-    console.error("BUG: element with id=contactForm not found !!!");
+    console.error("BUG: element with id=scanForm not found !!!");
   }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const button = document.getElementById(
+      "submit-button"
+    ) as HTMLButtonElement;
+
+    const required_approvals = [...checkboxes].filter(
+      (element) => element.id != "marketing"
+    ) as HTMLInputElement[];
+
+    required_approvals.forEach((checkbox) => {
+      checkbox.addEventListener("click", function () {
+        if (this.checked) {
+          button.disabled = !required_approvals.every(
+            (checkbox) => checkbox.checked
+          );
+        } else {
+          button.disabled = true;
+        }
+      });
+    });
+  });
 </script>

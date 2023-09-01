@@ -1,0 +1,43 @@
+<button
+  class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700"
+  id="resultModalButton"
+>
+  CR
+</button>
+
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center hidden px-4"
+  id="resultModal"
+>
+  <!-- Overlay -->
+  <div class="fixed inset-0 bg-black opacity-50" id="modalBackground"></div>
+
+  <div
+    class="z-50 mx-auto overflow-y-auto bg-blue-900 border shadow-lg w-100 rounded-xl modal-container md:max-w-md"
+  >
+    <div class="flex flex-col gap-4 p-4 text-left">
+      <h3 class="text-2xl font-bold uppercase">verification result</h3>
+      <p class="max-w-lg mb-2">
+        Fill below form with data we send you in email
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const openModalButton = document.getElementById(
+    "resultModalButton"
+  ) as HTMLButtonElement;
+  const modal = document.getElementById("resultModal") as HTMLModElement;
+  const modalBackground = document.getElementById("modalBackground");
+
+  openModalButton.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modalBackground && !modal?.classList.contains("hidden")) {
+      modal.classList.add("hidden");
+    }
+  });
+</script>

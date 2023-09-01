@@ -1,0 +1,62 @@
+<button
+  class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700"
+  id="openModal"
+>
+  Otwórz Modal
+</button>
+
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center hidden px-4"
+  id="myModal"
+>
+  <!-- Overlay -->
+  <div class="fixed inset-0 bg-black opacity-50" id="modalBackground"></div>
+
+  <div
+    class="z-50 mx-auto overflow-y-auto bg-blue-900 border shadow-lg w-100 rounded-xl modal-container md:max-w-md"
+  >
+    <div class="flex flex-col gap-4 p-4 text-left">
+      <h3 class="text-2xl font-bold uppercase">verify email</h3>
+      <p class="max-w-lg mb-2">
+        Fill below form with data we send you in email
+      </p>
+      <form id="scanForm" class="flex flex-col gap-4">
+        <div>
+          <label class="block pl-2 font-medium text-left text-gray-300" for="liczba1">Scan ID</label>
+          <input placeholder="12" class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800" type="number" id="liczba1" name="liczba1" min="0" step="1">
+        </div>
+        <div >
+          <label class="block pl-2 font-medium text-left text-gray-300" for="liczba2">Verification Code</label>
+          <input placeholder="023123" class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800" type="text" id="liczba2" name="liczba2" pattern="[0-9]{6}" title="Enter 6 digit code">
+        </div>
+
+        <button
+          id="submit-button"
+          type="submit"
+          class="mx-auto mt-10 rounded-lg w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-16 transition-smooth hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
+        >
+          Confirm
+        </button>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  const openModalButton = document.getElementById(
+    "openModal"
+  ) as HTMLButtonElement;
+  const modal = document.getElementById("myModal") as HTMLModElement;
+  const modalBackground = document.getElementById("modalBackground");
+
+  openModalButton.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modalBackground && !modal?.classList.contains("hidden")) {
+      modal.classList.add("hidden");
+    }
+  });
+</script>
