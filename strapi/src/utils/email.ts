@@ -10,6 +10,7 @@ export enum EmailType {
   TestFinished = "test_finished",
   ScanFailed = "scan_failed",
   ScanFinished = "scan_finished",
+  VerifyCode = "verify_code",
 }
 
 interface NotifyAdmin {

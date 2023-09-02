@@ -108,6 +108,10 @@ async function get_entry(id: number) {
     throw new NotFoundError(`Can not found security scan with id: ${id}`);
   }
 
+  if (entry.status != "unconfirmed") {
+    throw new ConflictError(`Scan with ${id} already confirmed`);
+  }
+
   return entry;
 }
 
@@ -132,9 +136,9 @@ function validate_body(body: object) {
     );
   }
 
-  if (typeof body.code != "number") {
+  if (typeof body.code != "string") {
     throw new UnprocessableEntityError(
-      `Invalid type od code field. This field must be number. Body: ${JSON.stringify(
+      `Invalid type od code field. This field must be string. Body: ${JSON.stringify(
         body
       )}`
     );

@@ -31,6 +31,23 @@ export default {
       HookState.afterCreate,
       `Created page security test with id: ${result.id}`
     );
+
+    try {
+      await sendEmail(
+        {
+          template_data: { id: result.id, code: result.verification_code },
+          to: result.email,
+          from: process.env.EMAIL_FROM,
+        },
+        EmailType.VerifyCode
+      );
+    } catch (err) {
+      log(
+        collection,
+        HookState.afterCreate,
+        `Unable to send report to send email with verification data`
+      );
+    }
   },
   async afterCreateMany(event) {
     const { result } = event;
