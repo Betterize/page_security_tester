@@ -4,6 +4,23 @@ version: "3.8"
 #       have the proper permissions for the UID 1001.
 
 services:
+  web_client:
+    container_name: ${APP_NAME}-web_client
+    image: ${APP_NAME}-web_client
+    build:
+      context: ./web_client
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    env_file: ./web_client/.env
+    # depends_on:
+    #   - strapi
+    volumes:
+      - ./web_client:/app
+    ports:
+      - "${WEB_CLIENT_HOST_PORT}:3000"
+    networks:
+      - app-network
+
   redis:
     image: bitnami/redis:7.0.10
     volumes:

@@ -8,6 +8,7 @@
         "start": "astro dev --host 0.0.0.0",
         "build": "npm run partytown && astro build",
         "preview": "astro preview",
+        "preview_all_hosts": "astro preview --host 0.0.0.0",
         "partytown": "partytown copylib public/~partytown"
     },
     "keywords": [],

@@ -19,14 +19,15 @@ This tool enables users to easily conduct scans of their websites in order to de
 
 Services configuration can be set up by environment variables. Services: database and redis loads variables from .env file that should be placed in main project directory. Other services configuration is described in their README files. Main .env file should contain below variables:
 
-| variable           | description                                                                                           |
-| ------------------ | ----------------------------------------------------------------------------------------------------- |
-| APP_NAME           | value of this variable will be used with naming docker images, containers and network                 |
-| DATABASE_USERNAME  | name of database user (**should match with strapi configuration**)                                    |
-| DATABASE_PASSWORD  | password of database user (**should match with strapi configuration**)                                |
-| DATABASE_NAME      | database name (**should match with strapi configuration**)                                            |
-| DATABASE_HOST_PORT | set up host port on which postgres will be running. You can also configure interface (127.0.0.1:5432) |
-| STRAPI_HOST_PORT   | set up host port on which strapi will be running. You can also configure interface (127.0.0.1:1337)   |
+| variable             | description                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------- |
+| APP_NAME             | value of this variable will be used with naming docker images, containers and network                   |
+| DATABASE_USERNAME    | name of database user (**should match with strapi configuration**)                                      |
+| DATABASE_PASSWORD    | password of database user (**should match with strapi configuration**)                                  |
+| DATABASE_NAME        | database name (**should match with strapi configuration**)                                              |
+| DATABASE_HOST_PORT   | set up host port on which postgres will be running. You can also configure interface (127.0.0.1:5432)   |
+| STRAPI_HOST_PORT     | set up host port on which strapi will be running. You can also configure interface (127.0.0.1:1337)     |
+| WEB_CLIENT_HOST_PORT | set up host port on which web_client will be running. You can also configure interface (127.0.0.1:3000) |
 
 Example **.env**:
 
@@ -39,6 +40,8 @@ DATABASE_NAME=some_db
 DATABASE_HOST_PORT=127.0.0.1:5432
 
 STRAPI_HOST_PORT=127.0.0.1:1337
+
+WEB_CLIENT_HOST_PORT=127.0.0.1:3000
 ```
 
 ### Run order
