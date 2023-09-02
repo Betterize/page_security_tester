@@ -13,7 +13,7 @@
       <p class="max-w-lg mb-2">
         Fill below form with data we send you in email
       </p>
-      <form id="scanForm" class="flex flex-col gap-4">
+      <form id="codeVerificationForm" class="flex flex-col gap-4">
         <div>
           <label class="block pl-2 font-medium text-left text-gray-300" for="liczba1">Scan ID</label>
           <input placeholder="12" class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800" type="number" id="liczba1" name="liczba1" min="0" step="1">
@@ -23,13 +23,21 @@
           <input placeholder="023123" class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800" type="text" id="liczba2" name="liczba2" pattern="[0-9]{6}" title="Enter 6 digit code">
         </div>
 
-        <button
-          id="submit-button"
-          type="submit"
-          class="mx-auto mt-10 rounded-lg w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-16 transition-smooth hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
-        >
-          Confirm
-        </button>
+        <!-- This paragraf content is setup by js to display errors -->
+        <p id="verifyCodeError" class="text-xl font-bold text-red-600"></p>
+
+        <div class="flex gap-4 mx-auto mt-10">
+          <button
+            id="veriy-code-button"
+            type="submit"
+            class="rounded-lg justify-center flex font-medium bg-blue-600 text-center text-white py-3 w-26 transition-smooth hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
+          >
+            Confirm
+          </button>
+          <div id="closeValidationCodeModal" class="border rounded-xl text-center py-3 w-26 transition-smooth hover:(transition-smooth bg-gray-100 text-black)">
+            <p>Close<p>
+          </div>
+        </div>
       </form>
       
     </div>
@@ -37,12 +45,53 @@
 </div>
 
 <script>
+  import { sendCodeVerificationRequest } from "src/typescript/securityScanForm";
+
+  const responseError = document.getElementById("verifyCodeError") as HTMLParagraphElement;
+
   const modal = document.getElementById("validationCodeModal") as HTMLModElement;
   const modalBackground = document.getElementById("modalBackground");
 
   window.addEventListener("click", (e) => {
     if (e.target === modalBackground && !modal?.classList.contains("hidden")) {
       modal.classList.add("hidden");
+      responseError.innerHTML = "";
     }
   });
+
+  const close = document.getElementById("closeValidationCodeModal") as HTMLDivElement;
+  close.addEventListener("click", (e) => {
+    modal.classList.add("hidden");
+    responseError.innerHTML = "";
+  });
+
+  // -------------------------------------------
+  const success_modal = document.getElementById("verificationResponseModal") as HTMLModElement;
+
+  async function onSubmit(event: SubmitEvent) {
+    responseError.innerHTML = "";
+    
+    event.preventDefault();
+    event.stopPropagation();
+
+    const onSuccess = () => {
+      modal.classList.add("hidden");
+      success_modal.classList.remove("hidden");
+    };
+
+    const onError = (error: string) => {
+      responseError.innerHTML = error;
+    };
+
+    const form = event.target as HTMLFormElement; // Get the form that was submitted
+
+    await sendCodeVerificationRequest(form, onSuccess, onError);
+  }
+
+  const form = document.getElementById("codeVerificationForm") as HTMLFormElement;
+  if (form) {
+    form.addEventListener("submit", onSubmit);
+  } else {
+    console.error("BUG: element with id=codeVerificationForm not found !!!");
+  }
 </script>

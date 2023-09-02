@@ -1,0 +1,143 @@
+---
+interface Regulation {
+  id: string;
+  href: string;
+  label: string;
+}
+
+const regulations: Regulation[] = [
+  {
+    id: "tool",
+    href: "/regulations/scanner/",
+    label: "Accept tool regulations",
+  },
+  { id: "rodo", href: "/regulations/rodo/", label: "Accept RODO regulations" },
+  {
+    id: "marketing",
+    href: "/regulations/marketing/",
+    label: "Accept marketing regulations",
+  },
+];
+---
+
+<div>
+  <div class="flex gap-2 p-1">
+    <input type="checkbox" id="Accept all" name="Accept all" class="my-auto" />
+    <label for="Accept all">Accept all</label>
+  </div>
+  <div class="flex gap-2 p-1">
+    <input
+      type="checkbox"
+      id="Accept needed"
+      name="Accept needed"
+      class="my-auto"
+    />
+    <label for="Accept needed">Accept needed</label>
+  </div>
+
+  <div class="ml-6">
+    {
+      regulations.map((regulation) => (
+        <div class="flex gap-2 p-1">
+          <input
+            type="checkbox"
+            id={regulation.id}
+            name={regulation.id}
+            class="my-auto bg-gray-400 rounded-xl"
+            disabled
+          />
+          <label for={regulation.id}>
+            <a
+              class="underline text-violet-400 underline-offset-2 hover:opacity-50"
+              href={regulation.href}
+            >
+              {regulation.label}
+            </a>
+          </label>
+        </div>
+      ))
+    }
+  </div>
+</div>
+<div class="flex-col flex justify-center gap-2 lg:(justify-start ) sm:flex-row">
+  <button
+    id="submit-button"
+    type="submit"
+    class="rounded-lg disabled:bg-blue-600/30 w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-16 transition-smooth enabled:hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
+    disabled
+  >
+    Scan
+  </button>
+  <div
+    id="show-verify-code-modal"
+    class="rounded-lg disabled:bg-blue-600/30 w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-8 transition-smooth hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
+  >
+    Verify Code
+  </div>
+</div>
+
+<script>
+  function setup_regulations_logic() {
+    const button = document.getElementById(
+      "submit-button"
+    ) as HTMLButtonElement;
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const approvals = [...checkboxes].filter(
+        (element) => element.id != "Accept all" && element.id != "Accept needed"
+      ) as HTMLInputElement[];
+
+      const accept_all = document.getElementById(
+        "Accept all"
+      ) as HTMLInputElement;
+      const accept_needed = document.getElementById(
+        "Accept needed"
+      ) as HTMLInputElement;
+
+      accept_all.addEventListener("click", function () {
+        if (this.checked) {
+          button.disabled = false;
+          accept_needed.checked = false;
+
+          approvals.forEach((approval) => {
+            approval.checked = true;
+          });
+        } else {
+          button.disabled = true;
+
+          approvals.forEach((approval) => {
+            approval.checked = false;
+          });
+        }
+      });
+
+      accept_needed.addEventListener("click", function () {
+        if (this.checked) {
+          button.disabled = false;
+          accept_all.checked = false;
+
+          approvals.forEach((approval) => {
+            if (approval.id != "marketing") {
+              approval.checked = true;
+            } else {
+              approval.checked = false;
+            }
+          });
+        } else {
+          button.disabled = true;
+
+          approvals.forEach((approval) => {
+            approval.checked = false;
+          });
+        }
+      });
+    });
+  }
+
+  setup_regulations_logic();
+
+  // -------------------------------------------
+
+  // -------------------------------------------
+</script>

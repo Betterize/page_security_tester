@@ -10,20 +10,18 @@
   >
     <div class="flex flex-col gap-4 p-4 text-left">
       <h3 class="text-2xl font-bold uppercase">something got wrong</h3>
-      <p class="max-w-lg mb-2">
-        It seems that the scanner is not available at the moment. Please try again later or contact us via the contact form.
-      </p>
+      <p class="max-w-lg mb-2" id="modal-error-msg"></p>
 
       <p class="max-w-lg mb-2">
 
       We apologize for the inconvenience
       </p>
       <button
-      class="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700"
-      id="scanCreateErrorModalButton"
-    >
-      Close
-    </button>
+        class="px-4 py-2 mx-auto font-bold text-white bg-red-500 rounded-full transition-smooth hover:bg-red-600"
+        id="scanCreateErrorModalButton"
+      >
+        Close
+      </button>
     </div>
   </div>
 </div>

@@ -1,7 +1,8 @@
 ---
 import ConfirmScan from "@components/modals/ConfirmScan.astro";
-import ScanConfirmationResult from "@components/modals/ScanConfirmationResult.astro";
+import ScanConfirmationSucced from "@components/modals/ScanConfirmationSucced.astro";
 import ScanCreateError from "@components/modals/ScanCreateError.astro";
+import ScanRegulations from "./ScanRegulations.astro";
 ---
 
 <div class="w-full mx-auto max-w-196">
@@ -45,68 +46,12 @@ import ScanCreateError from "@components/modals/ScanCreateError.astro";
                 oninvalid="setErrorMessage(this)"
       />
     </div>
-
-    <div>
-      <div class="flex gap-2 p-1">
-        <input
-          type="checkbox"
-          id="regulations"
-          name="regulations"
-          class="my-auto"
-        />
-        <label for="regulations"
-          ><a
-            class="underline text-violet-400 underline-offset-2 hover:opacity-50"
-            href="/regulations/marketing">Accept tool regulations</a
-          ></label
-        >
-      </div>
-      <div class="flex gap-2 p-1">
-        <input type="checkbox" id="rodo" name="rodo" class="my-auto" />
-        <label for="rodo"
-          ><a
-            class="underline text-violet-400 underline-offset-2 hover:opacity-50"
-            href="/regulations/marketing">Accept RODO regulations</a
-          ></label
-        >
-      </div>
-      <div class="flex gap-2 p-1">
-        <input
-          type="checkbox"
-          id="marketing"
-          name="marketing"
-          class="my-auto"
-        />
-        <label for="marketing"
-          ><a
-            class="underline text-violet-400 underline-offset-2 hover:opacity-50"
-            href="/regulations/marketing">Accept marketing regulations</a
-          ></label
-        >
-      </div>
-    </div>
-
-    <div
-      class="flex-col flex justify-center gap-2 lg:(justify-start ) sm:flex-row"
-    >
-      <button
-        id="submit-button"
-        type="submit"
-        class="rounded-lg disabled:bg-blue-600/30 w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-16 transition-smooth enabled:hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
-        disabled
-      >
-        Scan
-      </button>
-      <div
-        id="show-verify-code-modal"
-        class="rounded-lg disabled:bg-blue-600/30 w-full justify-center md:w-auto flex font-medium bg-blue-600 text-center text-white py-3 px-8 transition-smooth hover:(bg-blue-600/50 shadow-xl shadow-blue-600/20)"
-      >
-        Verify Code
-      </div>
-    </div>
+    <ScanRegulations />
   </form>
+
+  <!-- Modals -->
   <ConfirmScan />
-  <ScanConfirmationResult />
+  <ScanConfirmationSucced />
   <ScanCreateError />
 </div>
 
@@ -138,7 +83,7 @@ function setErrorMessage(input) {
 </style>
 
 <script>
-  import { sendContactRequest } from "src/typescript/securityScanForm";
+  import { sendScanRequest } from "src/typescript/securityScanForm";
 
   const validation_code_modal = document.getElementById(
     "validationCodeModal"
@@ -148,20 +93,20 @@ function setErrorMessage(input) {
   ) as HTMLModElement;
 
   // -------------------------------------------
+  //  Verify code modal from form
+  // -------------------------------------------
 
-  const showVerifyCodeModalButton = document.getElementById(
+  const showVerifyCodeModal = document.getElementById(
     "show-verify-code-modal"
   ) as HTMLDivElement;
 
-  showVerifyCodeModalButton.addEventListener("click", () => {
+  showVerifyCodeModal.addEventListener("click", () => {
     validation_code_modal.classList.remove("hidden");
   });
 
   // -------------------------------------------
 
   async function onSubmit(event: SubmitEvent) {
-    let thisForm = event.target as HTMLFormElement;
-
     event.preventDefault();
     event.stopPropagation();
 
@@ -170,18 +115,18 @@ function setErrorMessage(input) {
     };
 
     const onError = (error: string) => {
-      scan_create_modal.classList.remove("hidden");
-      // const responseInfo = document.getElementById("responseInfo");
+      const responseInfo = document.getElementById(
+        "modal-error-msg"
+      ) as HTMLParagraphElement;
 
-      // if (responseInfo) {
-      //   responseInfo.innerHTML = error;
-      // }
+      responseInfo.innerHTML = error;
+
+      scan_create_modal.classList.remove("hidden");
     };
 
     const form = event.target as HTMLFormElement; // Get the form that was submitted
 
-    //onSuccess();
-    onError("xd");
+    await sendScanRequest(form, onSuccess, onError);
   }
 
   const form = document.getElementById("scanForm") as HTMLFormElement;
@@ -190,28 +135,4 @@ function setErrorMessage(input) {
   } else {
     console.error("BUG: element with id=scanForm not found !!!");
   }
-
-  // below code is logic behind reqired checkboxes
-  document.addEventListener("DOMContentLoaded", function () {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    const button = document.getElementById(
-      "submit-button"
-    ) as HTMLButtonElement;
-
-    const required_approvals = [...checkboxes].filter(
-      (element) => element.id != "marketing"
-    ) as HTMLInputElement[];
-
-    required_approvals.forEach((checkbox) => {
-      checkbox.addEventListener("click", function () {
-        if (this.checked) {
-          button.disabled = !required_approvals.every(
-            (checkbox) => checkbox.checked
-          );
-        } else {
-          button.disabled = true;
-        }
-      });
-    });
-  });
 </script>
