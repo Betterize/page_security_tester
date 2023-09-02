@@ -36,12 +36,13 @@
     "status": {
       "type": "enumeration",
       "enum": [
+        "unconfirmed",
         "waiting",
         "running",
         "finished",
         "failed"
       ],
-      "default": "waiting",
+      "default": "unconfirmed",
       "required": true
     },
     "accepted_marketing": {
@@ -53,6 +54,11 @@
       "type": "boolean",
       "default": false,
       "required": true
+    },
+    "verification_code": {
+      "type": "string",
+      "regex": "^[0-9]{6}$",
+      "required": false
     }
   }
 }

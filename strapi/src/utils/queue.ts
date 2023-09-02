@@ -41,6 +41,5 @@ export async function notify_tests_runner(message: string) {
     await redisClient.connect();
     is_connected = true;
   }
-
   await redisClient.lPush(config.REDIS_QUEUE_NAME, message);
 }

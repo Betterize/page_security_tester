@@ -1,42 +1,16 @@
 import { log, HookState } from "../../../../utils/logger";
-import { notify_tests_runner } from "../../../../utils/queue";
+
 import {
-  notify_administrator,
   sendEmail,
   EmailType,
   sendEmailWithAttachments,
 } from "../../../../utils/email";
 import { getReport, ScanReport } from "../../../../utils/scan_report";
+import { generate_code } from "../../../../utils/verification_code";
 import { errors } from "@strapi/utils";
 const { ApplicationError } = errors;
 
 const collection = "page-security-test";
-
-async function setup_failed_status(id: number, message: string) {
-  try {
-    const entry = await strapi.entityService.update(
-      "api::page-security-test.page-security-test",
-      id,
-      {
-        data: {
-          status: "failed",
-          error_msg: message,
-        },
-      }
-    );
-    log(
-      collection,
-      HookState.afterCreate,
-      `Marked collection as failed and updated error_msg`
-    );
-  } catch (err) {
-    log(
-      collection,
-      HookState.afterCreate,
-      `Unable to update entity. Error: ${err}`
-    );
-  }
-}
 
 export default {
   async beforeCreate(event) {
@@ -47,6 +21,8 @@ export default {
         "Can not create security scan with not accepted scan regulations"
       );
     }
+
+    data.verification_code = generate_code();
   },
   async afterCreate(event) {
     const { result } = event;
@@ -55,36 +31,6 @@ export default {
       HookState.afterCreate,
       `Created page security test with id: ${result.id}`
     );
-
-    try {
-      await notify_tests_runner(
-        JSON.stringify({ id: result.id, website: result.website })
-      );
-      log(
-        collection,
-        HookState.afterCreate,
-        `Successfully added message to queue`
-      );
-    } catch (err) {
-      await setup_failed_status(
-        result.id,
-        `Unable to add message to queue. Error: ${err}`
-      );
-      try {
-        await notify_administrator(`${err}`);
-        log(
-          collection,
-          HookState.afterCreate,
-          `Unable to add message to queue. Notified administrator. Error: ${err}`
-        );
-      } catch (err) {
-        log(
-          collection,
-          HookState.afterCreate,
-          `Error!. Unable to send email. ${err}`
-        );
-      }
-    }
   },
   async afterCreateMany(event) {
     const { result } = event;
@@ -107,6 +53,13 @@ export default {
       throw new ApplicationError(
         `Can not update ${entry.status} page security scan`
       );
+    }
+
+    if (
+      "verification_code" in data &&
+      data.verification_code != entry.verification_code
+    ) {
+      throw new ApplicationError("Can not change verification code");
     }
 
     log(collection, HookState.beforeUpdate, `Updated entry with id: ${id}`);

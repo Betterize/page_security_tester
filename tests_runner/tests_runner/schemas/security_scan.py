@@ -9,6 +9,7 @@ from typing import Union
 @dataclass_json
 @dataclass
 class ScanStatus(Enum):
+    unconfirmed = "unconfirmed"
     waiting = 'waiting'
     running = 'running'
     finished = 'finished'
