@@ -1,36 +1,25 @@
-# Projekt Betterize
+## .env
 
+List of variable with example values
 
-### vue3-circle-progress custom component
-
-Ten komponent implementowany jest w repozytorium: [AddCubeDev/vue3-circle-progress.git](https://github.com/AddCubeDev/vue3-circle-progress.git).
-
-Aby poniższe skrypty zadziałały musisz mieć zainstalowany program [Nushell](https://www.nushell.sh).
-
-Jeżeli jeszcze nie sklonowałeś tego repozytorium, to możesz to zrobić w następujący sposób:
 ```
-npm run clone-circle-progress
-```
-Projekt zostanie sklonowany w katalogu: ../vue3-circle-progress
-```
-./betterize             <- katalog tego projektu
-./vue3-circle-progress  
+PUBLIC_STRAPI_TOKEN="i am example value"
+PUBLIC_STRAPI_BASE_URL="http://localhost:1337"
 ```
 
-Jeżeli chcesz mieć pewność, że katalog ../vue3-circle-progress zawiera
-najnowszą wersję, to uruchom następującą komendę:
+Please be aware that you should provide individual correct value of `PUBLIC_STRAPI_TOKEN`. To do this you need login to your strapi and generate API Token. Check [here](https://docs.strapi.io/user-docs/settings/API-tokens) if you don't know how to do it.
+
+## No docker run
+
+If you want to run this service locally without docker you need to have node installed. Then just install all dependencies with `npm install` and run with in development mode with:
+
 ```
-npm run pull-circle-progress
+npm run dev
 ```
 
-Reinstalacja pakietów (np. musiałeś skasować katalog node_modules, bo coś się nie kompilowało):
-```
-npm run reinstall
-```
+To build and run use bellow commands:
 
-### vanilla-tilt
-
-W obecnej implementacji pakiet 'vanilla-tilt' jest używany tylko na desktop-ach
-i jest ładowany warunkowo (patrz: index.astro), dlatego pakiet został usunięty z 
-pliku package.json (npm uninstall vanilla-tilt; bieżąca wersja to: 1.8 )
-i jego wersja .min została umieszczona w katalogu /public/scripts/vanilla-tilt.min.js.
+```
+npm run build
+npm run preview
+```
