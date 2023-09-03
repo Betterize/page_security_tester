@@ -5,27 +5,21 @@ export async function sendScanRequest(
     onSuccess: Function,
     onError: Function
 ) {
-    onSuccess();
-    return;
-
     const formFields = {
-        name: form.elements.namedItem("name"),
-        email: form.elements.namedItem("email"),
-        message: form.elements.namedItem("message"),
+        website: form.elements.namedItem("website") as HTMLFormElement,
+        email: form.elements.namedItem("email") as HTMLFormElement,
+        marketing: form.elements.namedItem("marketing") as HTMLFormElement,
+        rodo: form.elements.namedItem("rodo") as HTMLFormElement,
+        tool: form.elements.namedItem("tool") as HTMLFormElement,
     };
 
-    if (formFields.name.value == "") {
-        onError(`Pole ${formFields.name.ariaLabel}' nie może być puste !`);
+    if (formFields.website.value == "") {
+        onError(`Field ${formFields.website.ariaLabel} can not be empty!`);
         return;
     }
 
     if (formFields.email.value == "") {
-        onError(`Pole '${formFields.email.ariaLabel}' nie może być puste !`);
-        return;
-    }
-
-    if (formFields.message.value == "") {
-        onError(`Pole '${formFields.message.ariaLabel}' nie może być puste !`);
+        onError(`Field ${formFields.email.ariaLabel} can not be empty!`);
         return;
     }
 
@@ -37,21 +31,23 @@ export async function sendScanRequest(
         },
         body: JSON.stringify({
             data: {
-                name: formFields.name.value,
+                website: formFields.website.value,
                 email: formFields.email.value,
-                message: formFields.message.value,
+                accepted_regulations: formFields.tool.checked,
+                accepted_marketing: formFields.marketing.checked,
+                personal_data_processing: formFields.rodo.checked,
             },
         }),
     };
 
-    await fetch(strapiApiBaseUrl + "/contact-forms", params)
+    await fetch(strapiApiBaseUrl + "/page-security-tests", params)
         .then((response) => {
             if (!response.ok) {
-                throw new Error("Network response was not ok");
+                throw new Error("Network response was not ok. Try again later");
             }
             return response.json();
         })
-        .then((data) => {
+        .then((_) => {
             // console.log("Form submitted successfully!", data);
             // Do something with the response data, if needed
             onSuccess();
@@ -69,6 +65,36 @@ export async function sendCodeVerificationRequest(
     onSuccess: Function,
     onError: Function
 ) {
-    onError("test");
-    return;
+    const formFields = {
+        id: form.elements.namedItem("id") as HTMLFormElement,
+        code: form.elements.namedItem("code") as HTMLFormElement,
+    };
+
+    if (formFields.id.value == "") {
+        onError(`Field ${formFields.id.ariaLabel} can not be empty!`);
+        return;
+    }
+    if (formFields.code.value == "") {
+        onError(`Field ${formFields.code.ariaLabel} can not be empty!`);
+        return;
+    }
+
+    const params = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.PUBLIC_STRAPI_TOKEN}`,
+        },
+        body: JSON.stringify({
+            id: Number(formFields.id.value),
+            code: formFields.code.value,
+        }),
+    };
+    const response = await fetch(strapiApiBaseUrl + "/verify_code", params);
+    if (!response.ok) {
+        const body = await response.text();
+        onError(body);
+    } else {
+        onSuccess();
+    }
 }

@@ -22,7 +22,8 @@ import ScanRegulations from "./ScanRegulations.astro";
         aria-label="Your website url"
         maxlength="50"
         autocomplete="off"
-        data-error-required="msg"
+        required
+        data-error-required="This field can not be empty"
         oninput="this.setCustomValidity('')"
                 oninvalid="setErrorMessage(this)"
       />
@@ -41,7 +42,8 @@ import ScanRegulations from "./ScanRegulations.astro";
         aria-label="Your email"
         maxlength="50"
         autocomplete="off"
-        data-error-required="msg"
+        required
+        data-error-required="This field can not be empty"
         oninput="this.setCustomValidity('')"
                 oninvalid="setErrorMessage(this)"
       />

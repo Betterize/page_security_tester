@@ -3,7 +3,11 @@
   id="verificationResponseModal"
 >
   <!-- Overlay -->
-  <div class="fixed inset-0 bg-black opacity-50" id="verificationResponseModalBackground"></div>
+  <div
+    class="fixed inset-0 bg-black opacity-50"
+    id="verificationResponseModalBackground"
+  >
+  </div>
 
   <div
     class="z-50 mx-auto overflow-y-auto bg-blue-900 border shadow-lg w-100 rounded-xl modal-container md:max-w-md"
@@ -11,27 +15,41 @@
     <div class="flex flex-col gap-4 p-4 text-left">
       <h3 class="text-2xl font-bold uppercase">verification succeded</h3>
       <p class="max-w-lg mb-2">
-        Scan request successfully verified. The result will be sent to the email address you provided. We process a lot of inquiries so it may take some time.
+        Scan request successfully verified. The result will be sent to the email
+        address you provided. We process a lot of inquiries so it may take some
+        time.
       </p>
-      <div id="closeVerificationResponseModal" class="border mx-auto rounded-xl text-center py-3 w-26 transition-smooth hover:(transition-smooth bg-gray-100 text-black)">
-        <p>Close<p>
+      <div
+        id="closeVerificationResponseModal"
+        class="border mx-auto rounded-xl text-center py-3 w-26 transition-smooth hover:(transition-smooth bg-gray-100 text-black)"
+      >
+        <p>Close<p></p></p>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  const modal = document.getElementById("verificationResponseModal") as HTMLModElement;
-  const modalBackground = document.getElementById("verificationResponseModalBackground");
+      const modal = document.getElementById(
+        "verificationResponseModal"
+      ) as HTMLModElement;
+      const modalBackground = document.getElementById(
+        "verificationResponseModalBackground"
+      );
 
-  window.addEventListener("click", (e) => {
-    if (e.target === modalBackground && !modal?.classList.contains("hidden")) {
-      modal.classList.add("hidden");
-    }
-  });
+      window.addEventListener("click", (e) => {
+        if (
+          e.target === modalBackground &&
+          !modal?.classList.contains("hidden")
+        ) {
+          modal.classList.add("hidden");
+        }
+      });
 
-  const close = document.getElementById("closeVerificationResponseModal") as HTMLDivElement;
-  close.addEventListener("click", (e) => {
-    modal.classList.add("hidden");
-  });
-</script>
+      const close = document.getElementById(
+        "closeVerificationResponseModal"
+      ) as HTMLDivElement;
+      close.addEventListener("click", (e) => {
+        modal.classList.add("hidden");
+      });
+  </script>

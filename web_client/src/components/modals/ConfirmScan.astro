@@ -15,12 +15,37 @@
       </p>
       <form id="codeVerificationForm" class="flex flex-col gap-4">
         <div>
-          <label class="block pl-2 font-medium text-left text-gray-300" for="liczba1">Scan ID</label>
-          <input placeholder="12" class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800" type="number" id="liczba1" name="liczba1" min="0" step="1">
+          <label
+            class="block pl-2 font-medium text-left text-gray-300"
+            for="id">Scan ID</label
+          >
+          <input
+            placeholder="12"
+            class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800"
+            type="number"
+            id="id"
+            name="id"
+            min="0"
+            required
+            step="1"
+          />
         </div>
-        <div >
-          <label class="block pl-2 font-medium text-left text-gray-300" for="liczba2">Verification Code</label>
-          <input placeholder="023123" class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800" type="text" id="liczba2" name="liczba2" pattern="[0-9]{6}" title="Enter 6 digit code">
+        <div>
+          <label
+            class="block pl-2 font-medium text-left text-gray-300"
+            for="code">Verification Code</label
+          >
+          <input
+            placeholder="023123"
+            class="w-full p-3 text-sm font-light border-gray-200 rounded-lg bg-neutral-800"
+            type="text"
+            id="code"
+            name="code"
+            pattern="[0-9]{6}"
+            required
+            autocomplete="off"
+            title="Enter 6 digit code"
+          />
         </div>
 
         <!-- This paragraf content is setup by js to display errors -->
@@ -34,64 +59,78 @@
           >
             Confirm
           </button>
-          <div id="closeValidationCodeModal" class="border rounded-xl text-center py-3 w-26 transition-smooth hover:(transition-smooth bg-gray-100 text-black)">
-            <p>Close<p>
+          <div
+            id="closeValidationCodeModal"
+            class="border rounded-xl text-center py-3 w-26 transition-smooth hover:(transition-smooth bg-gray-100 text-black)"
+          >
+            <p>Close</p>
           </div>
         </div>
       </form>
-      
     </div>
+
   </div>
 </div>
 
 <script>
-  import { sendCodeVerificationRequest } from "src/typescript/securityScanForm";
+      import { sendCodeVerificationRequest } from "src/typescript/securityScanForm";
 
-  const responseError = document.getElementById("verifyCodeError") as HTMLParagraphElement;
+      const responseError = document.getElementById(
+        "verifyCodeError"
+      ) as HTMLParagraphElement;
 
-  const modal = document.getElementById("validationCodeModal") as HTMLModElement;
-  const modalBackground = document.getElementById("modalBackground");
+      const modal = document.getElementById(
+        "validationCodeModal"
+      ) as HTMLModElement;
+      const modalBackground = document.getElementById("modalBackground");
 
-  window.addEventListener("click", (e) => {
-    if (e.target === modalBackground && !modal?.classList.contains("hidden")) {
-      modal.classList.add("hidden");
-      responseError.innerHTML = "";
-    }
-  });
+      window.addEventListener("click", (e) => {
+        if (
+          e.target === modalBackground &&
+          !modal?.classList.contains("hidden")
+        ) {
+          modal.classList.add("hidden");
+          responseError.innerHTML = "";
+        }
+      });
 
-  const close = document.getElementById("closeValidationCodeModal") as HTMLDivElement;
-  close.addEventListener("click", (e) => {
-    modal.classList.add("hidden");
-    responseError.innerHTML = "";
-  });
+      const close = document.getElementById(
+        "closeValidationCodeModal"
+      ) as HTMLDivElement;
+      close.addEventListener("click", (e) => {
+        modal.classList.add("hidden");
+        responseError.innerHTML = "";
+      });
 
-  // -------------------------------------------
-  const success_modal = document.getElementById("verificationResponseModal") as HTMLModElement;
+      // -------------------------------------------
+      const success_modal = document.getElementById("verificationResponseModal") as HTMLModElement;
 
-  async function onSubmit(event: SubmitEvent) {
-    responseError.innerHTML = "";
-    
-    event.preventDefault();
-    event.stopPropagation();
+      async function onSubmit(event: SubmitEvent) {
+        responseError.innerHTML = "";
+        
+        event.preventDefault();
+        event.stopPropagation();
 
-    const onSuccess = () => {
-      modal.classList.add("hidden");
-      success_modal.classList.remove("hidden");
-    };
+        const onSuccess = () => {
+          modal.classList.add("hidden");
+          success_modal.classList.remove("hidden");
+        };
 
-    const onError = (error: string) => {
-      responseError.innerHTML = error;
-    };
+        const onError = (error: string) => {
+          responseError.innerHTML = error;
+        };
 
-    const form = event.target as HTMLFormElement; // Get the form that was submitted
+        const form = event.target as HTMLFormElement; // Get the form that was submitted
 
-    await sendCodeVerificationRequest(form, onSuccess, onError);
-  }
+        await sendCodeVerificationRequest(form, onSuccess, onError);
+      }
 
-  const form = document.getElementById("codeVerificationForm") as HTMLFormElement;
-  if (form) {
-    form.addEventListener("submit", onSubmit);
-  } else {
-    console.error("BUG: element with id=codeVerificationForm not found !!!");
-  }
+      const form = document.getElementById("codeVerificationForm") as HTMLFormElement;
+      if (form) {
+        form.addEventListener("submit", onSubmit);
+      } else {
+        console.error("BUG: element with id=codeVerificationForm not found !!!");
+      }
 </script>
+
+
